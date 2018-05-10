@@ -1,4 +1,18 @@
 {
+  "name": "bavix/geolib",
+  "description": "Geo Library",
+  "license": "MIT",
+  "keywords": [
+    "geo",
+    "metrical",
+    "distance"
+  ],
+  "authors": [
+    {
+      "name": "Babichev Maxim",
+      "email": "info@babichev.net"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Bavix\\": "src/"
