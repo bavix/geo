@@ -33,19 +33,32 @@ abstract class Unit implements \JsonSerializable
     }
 
     /**
-     * @param float $miles
+     * @param float $value
+     * @return Unit
+     */
+    public static function make(float $value): self
+    {
+        return new static($value);
+    }
+
+    /**
+     * @param float|self $miles
      * @return static
      */
-    public static function fromMiles(float $miles): self
+    public static function fromMiles($miles): self
     {
+        if (\is_object($miles) && $miles instanceof self) {
+            $miles = $miles->miles();
+        }
+
         return new static($miles * static::oneMile());
     }
 
     /**
-     * @param string $unit
+     * @param string|self $unit
      * @return static
      */
-    public function to(string $unit)
+    public function to($unit)
     {
         /**
          * @var self $unit

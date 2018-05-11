@@ -3,6 +3,7 @@
 namespace Bavix\Geo;
 
 use Bavix\Geo\Figures\RectangleFigure;
+use Bavix\Geo\Units\NauticalMileUnit;
 
 class Metrical
 {
@@ -35,7 +36,7 @@ class Metrical
         $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
         $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos(\deg2rad($theta));
         $dist = \rad2deg(\acos($partSin + $partCos));
-        $miles = $dist * 60. * 1.1515;
+        $miles = new NauticalMileUnit($dist * 60.);
 
         return $this->unit::fromMiles($miles);
     }
@@ -66,7 +67,7 @@ class Metrical
         $dx = $this->_dx($ddX);
 
         $ddY = $this->_dd($axisY);
-        $dy = $this->_dx($ddY);
+        $dy = $this->_dy($ddY);
 
         return RectangleFigure::make($center, $dx, $dy);
     }
@@ -77,7 +78,7 @@ class Metrical
      */
     protected function _dx(float $dd): float
     {
-        return \deg2rad(hypot($dd, $dd) / 2.);
+        return \deg2rad(\hypot($dd, $dd) / 2.);
     }
 
     /**
@@ -86,7 +87,7 @@ class Metrical
      */
     protected function _dy(float $dd): float
     {
-        return \deg2rad(hypot(0, $dd * 2.) / 2.);
+        return \deg2rad(\hypot(0, $dd));
     }
 
     /**
@@ -95,8 +96,9 @@ class Metrical
      */
     protected function _dd(Unit $unit): float
     {
-        $distance = $unit->miles() / 60. / 1.1515;
-        return \rad2deg($distance);
+        $miles = NauticalMileUnit::make((1852 / (3 * 0.3048)) / 1760);
+        $distance = $unit->miles() / $miles->miles() / 60.;
+        return \rad2deg(NauticalMileUnit::fromMiles($distance)->value());
     }
 
 }
