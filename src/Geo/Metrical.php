@@ -36,7 +36,7 @@ class Metrical
         $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
         $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos(\deg2rad($theta));
         $dist = \rad2deg(\acos($partSin + $partCos));
-        $miles = new NauticalMileUnit($dist * 60.);
+        $miles = NauticalMileUnit::make($dist * 60.);
 
         return $this->unit::fromMiles($miles);
     }
@@ -48,11 +48,7 @@ class Metrical
      */
     public function square(Coordinate $center, Unit $unit): RectangleFigure
     {
-        $dd = $this->_dd($unit);
-        $dx = $this->_dx($dd);
-        $dy = $this->_dy($dd);
-
-        return RectangleFigure::make($center, $dx, $dy);
+        return $this->rectangle($center, $unit, $unit);
     }
 
     /**
@@ -96,9 +92,8 @@ class Metrical
      */
     protected function _dd(Unit $unit): float
     {
-        $miles = NauticalMileUnit::make((1852 / (3 * 0.3048)) / 1760);
-        $distance = $unit->miles() / $miles->miles() / 60.;
-        return \rad2deg(NauticalMileUnit::fromMiles($distance)->value());
+        $distance = NauticalMileUnit::fromMiles($unit);
+        return \rad2deg($distance->value() / 60.);
     }
 
 }

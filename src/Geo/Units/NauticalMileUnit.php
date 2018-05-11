@@ -17,7 +17,7 @@ class NauticalMileUnit extends Unit
      */
     public static function oneMile(): float
     {
-        return 0.868976;
+        return 1 / ((1852 / (3 * 0.3048)) / 1760);
     }
 
 }
