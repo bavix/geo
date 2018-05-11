@@ -11,12 +11,7 @@ $rectangle = $metrical->rectangle(
     new \Bavix\Geo\Units\MileUnit(3)
 );
 
-//var_dump([
-//    $metrical->distance($center, new \Bavix\Geo\Coordinate($rectangle->getLeftUp()->getLatitudeDeg(), $center->getLongitudeDeg())),
-//    $metrical->distance($center, new \Bavix\Geo\Coordinate($center->getLatitudeDeg(), $rectangle->getLeftUp()->getLongitudeDeg())),
-//]);
-
-var_dump(\json_encode([
+echo \json_encode([
     'figure' => $rectangle,
 
     'c1->c2' => $metrical->distance($center, $rectangle->getLeftUp()),
@@ -27,4 +22,4 @@ var_dump(\json_encode([
     'c2->c5' => $metrical->distance($rectangle->getLeftUp(), $rectangle->getRightDown()),
     'c3->c5' => $metrical->distance($rectangle->getLeftDown(), $rectangle->getRightDown()),
     'c4->c5' => $metrical->distance($rectangle->getRightUp(), $rectangle->getRightDown()),
-], JSON_PRETTY_PRINT));
+], JSON_PRETTY_PRINT);

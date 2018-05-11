@@ -27,6 +27,17 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
+     * @param float $latitude
+     * @param float $longitude
+     *
+     * @return Coordinate
+     */
+    public static function make(float $latitude, float $longitude): self
+    {
+        return new static($latitude, $longitude);
+    }
+
+    /**
      * @return float
      */
     public function getLatitudeDeg(): float

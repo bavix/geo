@@ -3,6 +3,7 @@
 namespace Bavix\Geo;
 
 use Bavix\Geo\Figures\RectangleFigure;
+use Bavix\Geo\Units\KilometerUnit;
 use Bavix\Geo\Units\NauticalMileUnit;
 
 class Metrical
@@ -32,13 +33,27 @@ class Metrical
      */
     public function distance(Coordinate $first, Coordinate $second): Unit
     {
-        $theta = $first->getLongitudeDeg() - $second->getLongitudeDeg();
+        $theta = \deg2rad($first->getLongitudeDeg() - $second->getLongitudeDeg());
         $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
-        $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos(\deg2rad($theta));
+        $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
         $miles = NauticalMileUnit::make($dist * 60.);
 
         return $this->unit::fromMiles($miles);
+    }
+
+    /**
+     * @param Coordinate $center
+     * @param Unit       $unit
+     *
+     * @return RectangleFigure
+     */
+    public function squareByHypotenuse(Coordinate $center, Unit $unit): RectangleFigure
+    {
+        return $this->square(
+            $center,
+            MathUnit::div($unit, \sqrt(2))
+        );
     }
 
     /**
@@ -59,41 +74,14 @@ class Metrical
      */
     public function rectangle(Coordinate $center, Unit $axisX, Unit $axisY): RectangleFigure
     {
-        $ddX = $this->_dd($axisX);
-        $dx = $this->_dx($ddX);
+        $latitude = 0.014482999999998;
+        $longitude = 0.020398399999998;
 
-        $ddY = $this->_dd($axisY);
-        $dy = $this->_dy($ddY);
-
-        return RectangleFigure::make($center, $dx, $dy);
-    }
-
-    /**
-     * @param float $dd
-     * @return float
-     */
-    protected function _dx(float $dd): float
-    {
-        return \deg2rad(\hypot($dd, $dd) / 2.);
-    }
-
-    /**
-     * @param float $dd
-     * @return float
-     */
-    protected function _dy(float $dd): float
-    {
-        return \deg2rad(\hypot(0, $dd));
-    }
-
-    /**
-     * @param Unit $unit
-     * @return float
-     */
-    protected function _dd(Unit $unit): float
-    {
-        $distance = NauticalMileUnit::fromMiles($unit);
-        return \rad2deg($distance->value() / 60.);
+        return RectangleFigure::make(
+            $center,
+            $latitude * $axisX->miles(),
+            $longitude * $axisY->miles()
+        );
     }
 
 }

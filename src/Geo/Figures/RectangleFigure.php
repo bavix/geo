@@ -39,22 +39,22 @@ class RectangleFigure extends Figure
     {
         return (new static())
 
-            ->setLeftUp(new Coordinate(
+            ->setLeftUp(Coordinate::make(
                 $center->getLatitudeDeg() - $dx,
                 $center->getLongitudeDeg() - $dy
             ))
 
-            ->setLeftDown(new Coordinate(
+            ->setLeftDown(Coordinate::make(
                 $center->getLatitudeDeg() - $dx,
                 $center->getLongitudeDeg() + $dy
             ))
 
-            ->setRightUp(new Coordinate(
+            ->setRightUp(Coordinate::make(
                 $center->getLatitudeDeg() + $dx,
                 $center->getLongitudeDeg() - $dy
             ))
 
-            ->setRightDown(new Coordinate(
+            ->setRightDown(Coordinate::make(
                 $center->getLatitudeDeg() + $dx,
                 $center->getLongitudeDeg() + $dy
             ));
