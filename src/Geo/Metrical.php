@@ -68,14 +68,53 @@ class Metrical
 
     /**
      * @param Coordinate $center
+     * @param Unit       $axis
+     * @param bool       $isAxisX
+     *
+     * @return float
+     */
+    protected function axisComputed(Coordinate $center, Unit $axis, bool $isAxisX): float
+    {
+        $eps = $this->computedEps($axis);
+        $computed = $center;
+
+        do {
+            $computed = $computed::make(
+                $computed->getLatitudeDeg() + $eps * $isAxisX,
+                $computed->getLongitudeDeg() + $eps * !$isAxisX
+            );
+        } while ($this->distance($center, $computed)->miles() < $axis->miles());
+
+        $result =
+            ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $isAxisX +
+            ($center->getLongitudeDeg() - $computed->getLongitudeDeg()) * !$isAxisX;
+
+        return \max($result, -$result) / $axis->miles();
+    }
+
+    /**
+     * @param Unit $axis
+     *
+     * @return float
+     */
+    protected function computedEps(Unit $axis): float
+    {
+        return \max(
+            \round($axis->miles(), 5) / 1e5,
+            1e-7
+        );
+    }
+
+    /**
+     * @param Coordinate $center
      * @param Unit $axisX
      * @param Unit $axisY
      * @return RectangleFigure
      */
     public function rectangle(Coordinate $center, Unit $axisX, Unit $axisY): RectangleFigure
     {
-        $latitude = 0.014482999999998;
-        $longitude = 0.020398399999998;
+        $latitude = $this->axisComputed($center, $axisX, true);
+        $longitude = $this->axisComputed($center, $axisY, false);
 
         return RectangleFigure::make(
             $center,
