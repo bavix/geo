@@ -3,8 +3,9 @@
 namespace Bavix\Geo\Figures;
 
 use Bavix\Geo\Coordinate;
+use Bavix\Geo\Figure;
 
-class SquareFigure implements \JsonSerializable
+class RectangleFigure extends Figure
 {
 
     /**
@@ -26,6 +27,38 @@ class SquareFigure implements \JsonSerializable
      * @var Coordinate
      */
     protected $rightDown;
+
+    /**
+     * @param Coordinate $center
+     * @param float $dx
+     * @param float $dy
+     *
+     * @return self
+     */
+    public static function make(Coordinate $center, float $dx, float $dy): self
+    {
+        return (new static())
+
+            ->setLeftUp(new Coordinate(
+                $center->getLatitudeDeg() - $dx,
+                $center->getLongitudeDeg() - $dy
+            ))
+
+            ->setLeftDown(new Coordinate(
+                $center->getLatitudeDeg() - $dx,
+                $center->getLongitudeDeg() + $dy
+            ))
+
+            ->setRightUp(new Coordinate(
+                $center->getLatitudeDeg() + $dx,
+                $center->getLongitudeDeg() - $dy
+            ))
+
+            ->setRightDown(new Coordinate(
+                $center->getLatitudeDeg() + $dx,
+                $center->getLongitudeDeg() + $dy
+            ));
+    }
 
     /**
      * @return Coordinate

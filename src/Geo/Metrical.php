@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo;
 
-use Bavix\Geo\Figures\SquareFigure;
+use Bavix\Geo\Figures\RectangleFigure;
 
 class Metrical
 {
@@ -35,7 +35,7 @@ class Metrical
         $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
         $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos(\deg2rad($theta));
         $dist = \rad2deg(\acos($partSin + $partCos));
-        $miles = $dist * 60 * 1.1515;
+        $miles = $dist * 60. * 1.1515;
 
         return $this->unit::fromMiles($miles);
     }
@@ -43,37 +43,60 @@ class Metrical
     /**
      * @param Coordinate $center
      * @param Unit $unit
-     * @return SquareFigure
+     * @return RectangleFigure
      */
-    public function squad(Coordinate $center, Unit $unit): SquareFigure
+    public function square(Coordinate $center, Unit $unit): RectangleFigure
     {
-        $distance = $unit->miles() / 60 / 1.1515;
+        $dd = $this->_dd($unit);
+        $dx = $this->_dx($dd);
+        $dy = $this->_dy($dd);
 
-        $dd = \rad2deg($distance);
-        $dy = \deg2rad(hypot(0, $dd * 2) / 2.);
-        $dx = \deg2rad(hypot($dd, $dd) / 2.);
+        return RectangleFigure::make($center, $dx, $dy);
+    }
 
-        return (new SquareFigure())
+    /**
+     * @param Coordinate $center
+     * @param Unit $axisX
+     * @param Unit $axisY
+     * @return RectangleFigure
+     */
+    public function rectangle(Coordinate $center, Unit $axisX, Unit $axisY): RectangleFigure
+    {
+        $ddX = $this->_dd($axisX);
+        $dx = $this->_dx($ddX);
 
-            ->setLeftUp(new Coordinate(
-                $center->getLatitudeDeg() - $dx,
-                $center->getLongitudeDeg() - $dy
-            ))
+        $ddY = $this->_dd($axisY);
+        $dy = $this->_dx($ddY);
 
-            ->setLeftDown(new Coordinate(
-                $center->getLatitudeDeg() - $dx,
-                $center->getLongitudeDeg() + $dy
-            ))
+        return RectangleFigure::make($center, $dx, $dy);
+    }
 
-            ->setRightUp(new Coordinate(
-                $center->getLatitudeDeg() + $dx,
-                $center->getLongitudeDeg() - $dy
-            ))
+    /**
+     * @param float $dd
+     * @return float
+     */
+    protected function _dx(float $dd): float
+    {
+        return \deg2rad(hypot($dd, $dd) / 2.);
+    }
 
-            ->setRightDown(new Coordinate(
-                $center->getLatitudeDeg() + $dx,
-                $center->getLongitudeDeg() + $dy
-            ));
+    /**
+     * @param float $dd
+     * @return float
+     */
+    protected function _dy(float $dd): float
+    {
+        return \deg2rad(hypot(0, $dd * 2.) / 2.);
+    }
+
+    /**
+     * @param Unit $unit
+     * @return float
+     */
+    protected function _dd(Unit $unit): float
+    {
+        $distance = $unit->miles() / 60. / 1.1515;
+        return \rad2deg($distance);
     }
 
 }

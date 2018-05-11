@@ -5,7 +5,7 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 $center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
 
 $metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\KilometerUnit::class);
-$square = $metrical->squad($center, new \Bavix\Geo\Units\MileUnit(3));
+$square = $metrical->square($center, new \Bavix\Geo\Units\KilometerUnit(3));
 
 var_dump(\json_encode([
     'square' => $square,

@@ -38,7 +38,7 @@ abstract class Unit implements \JsonSerializable
      */
     public static function fromMiles(float $miles): self
     {
-        return new static($miles / static::oneMile());
+        return new static($miles * static::oneMile());
     }
 
     /**
@@ -58,7 +58,7 @@ abstract class Unit implements \JsonSerializable
      */
     public function miles(): float
     {
-        return $this->value * static::oneMile();
+        return $this->value / static::oneMile();
     }
 
     /**
