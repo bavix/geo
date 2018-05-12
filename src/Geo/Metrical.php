@@ -38,8 +38,7 @@ class Metrical
         $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
         $miles = NauticalMileUnit::make($dist * 60.);
-
-        return $this->unit::fromMiles($miles);
+        return $miles->to($this->unit);
     }
 
     /**
@@ -87,7 +86,7 @@ class Metrical
             $distance = $this->distance($center, $computed);
             $eps += $this->computedEps($distance);
 
-        } while ($distance->miles() < $axis->miles());
+        } while (CompareUnit::less($distance, $axis));
 
         $result =
             ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $isAxisX +
