@@ -16,6 +16,11 @@ abstract class Unit implements \JsonSerializable
     protected $value;
 
     /**
+     * @var float
+     */
+    protected $miles;
+
+    /**
      * Unit constructor.
      * @param float $value
      */
@@ -71,7 +76,11 @@ abstract class Unit implements \JsonSerializable
      */
     public function miles(): float
     {
-        return $this->value / static::oneMile();
+        if (!$this->miles) {
+            $this->miles = $this->value / static::oneMile();
+        }
+
+        return $this->miles;
     }
 
     /**

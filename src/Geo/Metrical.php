@@ -83,7 +83,11 @@ class Metrical
                 $computed->getLatitudeDeg() + $eps * $isAxisX,
                 $computed->getLongitudeDeg() + $eps * !$isAxisX
             );
-        } while ($this->distance($center, $computed)->miles() < $axis->miles());
+
+            $distance = $this->distance($center, $computed);
+            $eps += $this->computedEps($distance);
+
+        } while ($distance->miles() < $axis->miles());
 
         $result =
             ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $isAxisX +
