@@ -3,7 +3,6 @@
 namespace Bavix\Geo;
 
 use Bavix\Geo\Figures\RectangleFigure;
-use Bavix\Geo\Units\KilometerUnit;
 use Bavix\Geo\Units\NauticalMileUnit;
 
 class Metrical
