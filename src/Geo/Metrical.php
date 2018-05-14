@@ -75,24 +75,24 @@ class Metrical
     protected function axisComputed(Coordinate $center, Coordinate $computed, Axis $axis): float
     {
         $eps = $this->computedEps($axis->unit());
-        $computed = $computed->minus($eps);
-        $i = 0;
+        $computed = $computed->plus($eps);
+        $iterator = 0;
 
-        while ($i < 1000) {
+        while ($iterator < 256) {
 
             $distance = $this->distance($center, $computed);
+            $eps += $this->computedEps($distance);
 
             if (!CompareUnit::less($distance, $axis->unit())) {
                 break;
             }
 
-            $eps += $this->computedEps($distance);
             $computed = $computed::make(
                 $computed->getLatitudeDeg() + $eps * $axis->isAxisX(),
                 $computed->getLongitudeDeg() + $eps * !$axis->isAxisX()
             );
 
-            $i++;
+            $iterator++;
 
         }
 
@@ -127,8 +127,8 @@ class Metrical
         $axisX = Axis::make($unitX);
         $axisY = Axis::make($unitY, false);
 
-        $vx = $this->speed($axisX->unit()->to(NauticalMileUnit::class));
-        $vy = $this->speed($axisY->unit()->to(NauticalMileUnit::class));
+        $vx = $this->speed($axisX->unit(NauticalMileUnit::class));
+        $vy = $this->speed($axisY->unit(NauticalMileUnit::class));
         $dx = \deg2rad(\hypot($vx, $vx) / 2.);
         $dy = \deg2rad(\hypot(0, $vy));
 
