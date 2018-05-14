@@ -96,9 +96,11 @@ class Metrical
 
         }
 
-        $result =
-            ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $axis->isAxisX() +
-            ($center->getLongitudeDeg() - $computed->getLongitudeDeg()) * !$axis->isAxisX();
+        if ($axis->isAxisX()) {
+            $result = $center->getLatitudeDeg() - $computed->getLatitudeDeg();
+        } else {
+            $result = $center->getLongitudeDeg() - $computed->getLongitudeDeg();
+        }
 
         return \abs($result) / $axis->unit()->miles();
     }
