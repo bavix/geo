@@ -8,59 +8,57 @@ class MathUnit
 {
 
     /**
-     * @param Unit $unit
+     * @param $value
+     * @return float
+     */
+    protected static function miles($value): float
+    {
+        if (\is_object($value) && $value instanceof Unit)
+        {
+            return $value->miles();
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param Unit|float $unit
      * @param Unit|float $value
      * @return MileUnit
      */
-    public static function add(Unit $unit, $value): MileUnit
+    public static function add($unit, $value): MileUnit
     {
-        if (\is_object($value) && $value instanceof Unit) {
-            return new MileUnit($unit->miles() + $value->miles());
-        }
-
-        return new MileUnit($unit->miles() + $value);
+        return new MileUnit(static::miles($unit) + static::miles($value));
     }
     
     /**
-     * @param Unit $unit
+     * @param Unit|float $unit
      * @param Unit|float $value
      * @return MileUnit
      */
-    public static function sub(Unit $unit, $value): MileUnit
+    public static function sub($unit, $value): MileUnit
     {
-        if (\is_object($value) && $value instanceof Unit) {
-            return new MileUnit($unit->miles() - $value->miles());
-        }
-
-        return new MileUnit($unit->miles() - $value);
+        return new MileUnit(static::miles($unit) - static::miles($value));
     }
     
     /**
-     * @param Unit $unit
+     * @param Unit|float $unit
      * @param Unit|float $value
      * @return MileUnit
      */
-    public static function div(Unit $unit, $value): MileUnit
+    public static function div($unit, $value): MileUnit
     {
-        if (\is_object($value) && $value instanceof Unit) {
-            return new MileUnit($unit->miles() / $value->miles());
-        }
-
-        return new MileUnit($unit->miles() / $value);
+        return new MileUnit(static::miles($unit) / static::miles($value));
     }
     
     /**
-     * @param Unit $unit
+     * @param Unit|float $unit
      * @param Unit|float $value
      * @return MileUnit
      */
-    public static function mul(Unit $unit, $value): MileUnit
+    public static function mul($unit, $value): MileUnit
     {
-        if (\is_object($value) && $value instanceof Unit) {
-            return new MileUnit($unit->miles() * $value->miles());
-        }
-
-        return new MileUnit($unit->miles() * $value);
+        return new MileUnit(static::miles($unit) * static::miles($value));
     }
     
 }
