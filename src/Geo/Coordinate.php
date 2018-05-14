@@ -38,6 +38,30 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
+     * @param float $value
+     * @return Coordinate
+     */
+    public function plus(float $value): self
+    {
+        return new static(
+            $this->getLatitudeDeg() + $value,
+            $this->getLongitudeDeg() + $value
+        );
+    }
+
+    /**
+     * @param float $value
+     * @return Coordinate
+     */
+    public function minus(float $value): self
+    {
+        return new static(
+            $this->getLatitudeDeg() - $value,
+            $this->getLongitudeDeg() - $value
+        );
+    }
+
+    /**
      * @return float
      */
     public function getLatitudeDeg(): float

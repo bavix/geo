@@ -67,32 +67,40 @@ class Metrical
 
     /**
      * @param Coordinate $center
-     * @param Unit       $axis
-     * @param bool       $isAxisX
+     * @param Coordinate $computed
+     * @param Axis $axis
      *
      * @return float
      */
-    protected function axisComputed(Coordinate $center, Unit $axis, bool $isAxisX): float
+    protected function axisComputed(Coordinate $center, Coordinate $computed, Axis $axis): float
     {
-        $eps = $this->computedEps($axis);
-        $computed = $center;
+        $eps = $this->computedEps($axis->unit());
+        $computed = $computed->minus($eps);
+        $i = 0;
 
-        do {
-            $computed = $computed::make(
-                $computed->getLatitudeDeg() + $eps * $isAxisX,
-                $computed->getLongitudeDeg() + $eps * !$isAxisX
-            );
+        while ($i < 1000) {
 
             $distance = $this->distance($center, $computed);
-            $eps += $this->computedEps($distance);
 
-        } while (CompareUnit::less($distance, $axis));
+            if (!CompareUnit::less($distance, $axis->unit())) {
+                break;
+            }
+
+            $eps += $this->computedEps($distance);
+            $computed = $computed::make(
+                $computed->getLatitudeDeg() + $eps * $axis->isAxisX(),
+                $computed->getLongitudeDeg() + $eps * !$axis->isAxisX()
+            );
+
+            $i++;
+
+        }
 
         $result =
-            ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $isAxisX +
-            ($center->getLongitudeDeg() - $computed->getLongitudeDeg()) * !$isAxisX;
+            ($center->getLatitudeDeg() - $computed->getLatitudeDeg()) * $axis->isAxisX() +
+            ($center->getLongitudeDeg() - $computed->getLongitudeDeg()) * !$axis->isAxisX();
 
-        return \max($result, -$result) / $axis->miles();
+        return \abs($result) / $axis->unit()->miles();
     }
 
     /**
@@ -110,20 +118,48 @@ class Metrical
 
     /**
      * @param Coordinate $center
-     * @param Unit $axisX
-     * @param Unit $axisY
+     * @param Unit $unitX
+     * @param Unit $unitY
      * @return RectangleFigure
      */
-    public function rectangle(Coordinate $center, Unit $axisX, Unit $axisY): RectangleFigure
+    public function rectangle(Coordinate $center, Unit $unitX, Unit $unitY): RectangleFigure
     {
-        $latitude = $this->axisComputed($center, $axisX, true);
-        $longitude = $this->axisComputed($center, $axisY, false);
+        $axisX = Axis::make($unitX);
+        $axisY = Axis::make($unitY, false);
+
+        $vx = $this->speed($axisX->unit()->to(NauticalMileUnit::class));
+        $vy = $this->speed($axisY->unit()->to(NauticalMileUnit::class));
+        $dx = \deg2rad(\hypot($vx, $vx) / 2.);
+        $dy = \deg2rad(\hypot(0, $vy));
+
+        $computedX = new Coordinate(
+            $center->getLatitudeDeg() + $dx,
+            $center->getLongitudeDeg()
+        );
+
+        $computedY = new Coordinate(
+            $center->getLatitudeDeg(),
+            $center->getLongitudeDeg() + $dy
+        );
+
+        $latitude = $this->axisComputed($center, $computedX, $axisX);
+        $longitude = $this->axisComputed($center, $computedY, $axisY);
 
         return RectangleFigure::make(
             $center,
-            $latitude * $axisX->miles(),
-            $longitude * $axisY->miles()
+            MathUnit::mul($axisX->unit(), $latitude)->miles(),
+            MathUnit::mul($axisY->unit(), $longitude)->miles()
         );
+    }
+
+    /**
+     * @param Unit $unit
+     *
+     * @return float
+     */
+    protected function speed(Unit $unit): float
+    {
+        return \rad2deg(NauticalMileUnit::fromMiles($unit)->value() / 60.);
     }
 
 }
