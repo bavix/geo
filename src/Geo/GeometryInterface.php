@@ -4,5 +4,8 @@ namespace Bavix\Geo;
 
 interface GeometryInterface extends \Countable
 {
-    public function getPoints(): array;
+    /**
+     * @return Coordinate[]
+     */
+    public function points(): array;
 }

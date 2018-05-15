@@ -14,7 +14,7 @@ class Polygon implements GeometryInterface
      * @param Coordinate $point
      * @return static
      */
-    public function addPoint(Coordinate $point): self
+    public function push(Coordinate $point): self
     {
         $this->points[] = $point;
         return $this;
@@ -31,7 +31,7 @@ class Polygon implements GeometryInterface
     /**
      * @return Coordinate[]
      */
-    public function getPoints(): array
+    public function points(): array
     {
         return $this->points;
     }
@@ -39,11 +39,11 @@ class Polygon implements GeometryInterface
     /**
      * @return float[]
      */
-    public function getLatitudes(): array
+    public function latitudes(): array
     {
         $data = [];
         foreach ($this->points as $point) {
-            $data[] = $point->getLatitudeDeg();
+            $data[] = $point->latitude()->degrees;
         }
         return $data;
     }
@@ -51,11 +51,11 @@ class Polygon implements GeometryInterface
     /**
      * @return float[]
      */
-    public function getLongitudes(): array
+    public function longitudes(): array
     {
         $data = [];
         foreach ($this->points as $point) {
-            $data[] = $point->getLongitudeDeg();
+            $data[] = $point->longitude()->degrees;
         }
         return $data;
     }
@@ -70,12 +70,12 @@ class Polygon implements GeometryInterface
     {
         $result = false;
         $count = \count($this);
-        $latitudes = $this->getLatitudes();
-        $longitudes = $this->getLongitudes();
+        $latitudes = $this->latitudes();
+        $longitudes = $this->longitudes();
         for ($curr = 0, $prev = $count - 1; $curr < $count; $prev = $curr++) {
-            if (($longitudes[$curr] > $point->getLongitudeDeg()) ^ ($longitudes[$prev] > $point->getLongitudeDeg()) &&
-                $point->getLatitudeDeg() < ($latitudes[$prev] - $latitudes[$curr])
-                * ($point->getLongitudeDeg() - $longitudes[$curr])
+            if (($longitudes[$curr] > $point->longitude()->degrees) ^ ($longitudes[$prev] > $point->longitude()->degrees) &&
+                $point->latitude()->degrees < ($latitudes[$prev] - $latitudes[$curr])
+                * ($point->longitude()->degrees - $longitudes[$curr])
                 / ($longitudes[$prev] - $longitudes[$curr])
                 + $latitudes[$curr]) {
                 $result = !$result;
@@ -88,7 +88,7 @@ class Polygon implements GeometryInterface
     /**
      * @return static
      */
-    public function getReverse(): self
+    public function reverse(): self
     {
         $self = clone $this;
         $self->points = \array_reverse($this->points);

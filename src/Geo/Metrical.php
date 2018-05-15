@@ -23,18 +23,18 @@ class Metrical
     }
 
     /**
-     * @param Coordinate $first
-     * @param Coordinate $second
+     * @param Coordinate $from
+     * @param Coordinate $to
      *
      * @return Unit
      *
      * @see https://en.wikipedia.org/wiki/Great-circle_distance
      */
-    public function distance(Coordinate $first, Coordinate $second): Unit
+    public function distance(Coordinate $from, Coordinate $to): Unit
     {
-        $theta = $first->getLongitudeRad() - $second->getLongitudeRad();
-        $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
-        $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos($theta);
+        $theta = $from->longitude()->radian - $to->longitude()->radian;
+        $partSin = \sin($from->latitude()->radian) * \sin($to->latitude()->radian);
+        $partCos = \cos($from->latitude()->radian) * \cos($to->latitude()->radian) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
         return NauticalMileUnit::make($dist * 60.)
             ->to($this->unit);
@@ -81,13 +81,13 @@ class Metrical
         $dy = \deg2rad(\hypot(0, $vy));
 
         $computedX = new Coordinate(
-            $center->getLatitudeDeg() + $dx,
-            $center->getLongitudeDeg()
+            $center->latitude()->degrees + $dx,
+            $center->longitude()->degrees
         );
 
         $computedY = new Coordinate(
-            $center->getLatitudeDeg(),
-            $center->getLongitudeDeg() + $dy
+            $center->latitude()->degrees,
+            $center->longitude()->degrees + $dy
         );
 
         $latitude = $this->axisComputed($center, $computedX, $axisX);
@@ -123,8 +123,8 @@ class Metrical
             }
 
             $computed = $computed::make(
-                $computed->getLatitudeDeg() + $eps * $axis->isAxisX(),
-                $computed->getLongitudeDeg() + $eps * !$axis->isAxisX()
+                $computed->latitude()->degrees + $eps * $axis->isAxisX(),
+                $computed->longitude()->degrees + $eps * !$axis->isAxisX()
             );
 
             $iterator++;
@@ -132,9 +132,9 @@ class Metrical
         }
 
         if ($axis->isAxisX()) {
-            $result = $center->getLatitudeDeg() - $computed->getLatitudeDeg();
+            $result = $center->latitude()->degrees - $computed->latitude()->degrees;
         } else {
-            $result = $center->getLongitudeDeg() - $computed->getLongitudeDeg();
+            $result = $center->longitude()->degrees - $computed->longitude()->degrees;
         }
 
         return \abs($result) / $axis->unit()->miles();

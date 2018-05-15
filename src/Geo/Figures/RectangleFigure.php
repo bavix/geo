@@ -160,10 +160,10 @@ class RectangleFigure extends Figure
     public function toPolygon(): Polygon
     {
         return (new Polygon())
-            ->addPoint($this->getLeftUp())
-            ->addPoint($this->getRightUp())
-            ->addPoint($this->getRightDown())
-            ->addPoint($this->getLeftDown());
+            ->push($this->getLeftUp())
+            ->push($this->getRightUp())
+            ->push($this->getRightDown())
+            ->push($this->getLeftDown());
     }
 
     /**
