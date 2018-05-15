@@ -5,6 +5,8 @@ namespace Bavix\Geo;
 /**
  * Class Figure
  * @package Bavix\Geo
+ *
+ * @deprecated
  */
 abstract class Figure implements \JsonSerializable
 {

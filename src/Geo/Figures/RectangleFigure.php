@@ -6,6 +6,13 @@ use Bavix\Geo\Coordinate;
 use Bavix\Geo\Figure;
 use Bavix\Geo\Polygon;
 
+/**
+ * Class RectangleFigure
+ *
+ * @package Bavix\Geo\Figures
+ *
+ * @deprecated
+ */
 class RectangleFigure extends Figure
 {
 
