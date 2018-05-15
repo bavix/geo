@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo;
 
-class Polygon implements \Countable
+class Polygon implements GeometryInterface
 {
 
     /**
@@ -18,6 +18,14 @@ class Polygon implements \Countable
     {
         $this->points[] = $point;
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function count(): int
+    {
+        return \count($this->points);
     }
 
     /**
@@ -50,14 +58,6 @@ class Polygon implements \Countable
             $data[] = $point->getLongitudeDeg();
         }
         return $data;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function count(): int
-    {
-        return \count($this->points);
     }
 
     /**

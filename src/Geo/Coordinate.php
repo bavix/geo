@@ -43,7 +43,7 @@ class Coordinate implements \JsonSerializable
      */
     public function plus(float $value): self
     {
-        return new static(
+        return static::make(
             $this->getLatitudeDeg() + $value,
             $this->getLongitudeDeg() + $value
         );
@@ -55,7 +55,7 @@ class Coordinate implements \JsonSerializable
      */
     public function minus(float $value): self
     {
-        return new static(
+        return static::make(
             $this->getLatitudeDeg() - $value,
             $this->getLongitudeDeg() - $value
         );

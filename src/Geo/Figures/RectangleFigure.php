@@ -4,6 +4,7 @@ namespace Bavix\Geo\Figures;
 
 use Bavix\Geo\Coordinate;
 use Bavix\Geo\Figure;
+use Bavix\Geo\Polygon;
 
 class RectangleFigure extends Figure
 {
@@ -151,6 +152,18 @@ class RectangleFigure extends Figure
     {
         $this->rightDown = $rightDown;
         return $this;
+    }
+
+    /**
+     * @return Polygon
+     */
+    public function toPolygon(): Polygon
+    {
+        return (new Polygon())
+            ->addPoint($this->getLeftUp())
+            ->addPoint($this->getRightUp())
+            ->addPoint($this->getRightDown())
+            ->addPoint($this->getLeftDown());
     }
 
     /**

@@ -66,6 +66,42 @@ class Metrical
 
     /**
      * @param Coordinate $center
+     * @param Unit $unitX
+     * @param Unit $unitY
+     * @return RectangleFigure
+     */
+    public function rectangle(Coordinate $center, Unit $unitX, Unit $unitY): RectangleFigure
+    {
+        $axisX = Axis::make($unitX);
+        $axisY = Axis::make($unitY, false);
+
+        $vx = $this->speed($axisX->unit(NauticalMileUnit::class));
+        $vy = $this->speed($axisY->unit(NauticalMileUnit::class));
+        $dx = \deg2rad(\hypot($vx, $vx) / 2.);
+        $dy = \deg2rad(\hypot(0, $vy));
+
+        $computedX = new Coordinate(
+            $center->getLatitudeDeg() + $dx,
+            $center->getLongitudeDeg()
+        );
+
+        $computedY = new Coordinate(
+            $center->getLatitudeDeg(),
+            $center->getLongitudeDeg() + $dy
+        );
+
+        $latitude = $this->axisComputed($center, $computedX, $axisX);
+        $longitude = $this->axisComputed($center, $computedY, $axisY);
+
+        return RectangleFigure::make(
+            $center,
+            MathUnit::mul($axisX->unit(), $latitude)->miles(),
+            MathUnit::mul($axisY->unit(), $longitude)->miles()
+        );
+    }
+
+    /**
+     * @param Coordinate $center
      * @param Coordinate $computed
      * @param Axis $axis
      *
@@ -114,42 +150,6 @@ class Metrical
         return \max(
             \round($axis->miles(), 5) / 1e5,
             1e-7
-        );
-    }
-
-    /**
-     * @param Coordinate $center
-     * @param Unit $unitX
-     * @param Unit $unitY
-     * @return RectangleFigure
-     */
-    public function rectangle(Coordinate $center, Unit $unitX, Unit $unitY): RectangleFigure
-    {
-        $axisX = Axis::make($unitX);
-        $axisY = Axis::make($unitY, false);
-
-        $vx = $this->speed($axisX->unit(NauticalMileUnit::class));
-        $vy = $this->speed($axisY->unit(NauticalMileUnit::class));
-        $dx = \deg2rad(\hypot($vx, $vx) / 2.);
-        $dy = \deg2rad(\hypot(0, $vy));
-
-        $computedX = new Coordinate(
-            $center->getLatitudeDeg() + $dx,
-            $center->getLongitudeDeg()
-        );
-
-        $computedY = new Coordinate(
-            $center->getLatitudeDeg(),
-            $center->getLongitudeDeg() + $dy
-        );
-
-        $latitude = $this->axisComputed($center, $computedX, $axisX);
-        $longitude = $this->axisComputed($center, $computedY, $axisY);
-
-        return RectangleFigure::make(
-            $center,
-            MathUnit::mul($axisX->unit(), $latitude)->miles(),
-            MathUnit::mul($axisY->unit(), $longitude)->miles()
         );
     }
 
