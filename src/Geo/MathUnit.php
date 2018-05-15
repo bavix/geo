@@ -4,6 +4,13 @@ namespace Bavix\Geo;
 
 use Bavix\Geo\Units\MileUnit;
 
+/**
+ * Class MathUnit
+ *
+ * @package Bavix\Geo
+ *
+ * @deprecated
+ */
 class MathUnit
 {
 

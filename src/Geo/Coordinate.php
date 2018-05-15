@@ -6,12 +6,12 @@ class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var float
+     * @var AxisProperty
      */
     protected $latitude;
 
     /**
-     * @var float
+     * @var AxisProperty
      */
     protected $longitude;
 
@@ -22,8 +22,11 @@ class Coordinate implements \JsonSerializable
      */
     public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        $this->latitude = AxisProperty::make();
+        $this->latitude->degrees = $latitude;
+
+        $this->longitude = AxisProperty::make();
+        $this->longitude->degrees = $longitude;
     }
 
     /**
@@ -38,59 +41,85 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $value
+     * @param float $latitude
+     * @param float $longitude
      * @return Coordinate
      */
-    public function plus(float $value): self
+    public function plus(float $latitude, float $longitude = null): self
     {
-        return new static(
-            $this->getLatitudeDeg() + $value,
-            $this->getLongitudeDeg() + $value
+        $longitude = $longitude ?: $latitude;
+
+        return static::make(
+            $this->latitude->degrees + $latitude,
+            $this->longitude->degrees + $longitude
         );
     }
 
     /**
-     * @param float $value
+     * @param float $latitude
+     * @param float $longitude
      * @return Coordinate
      */
-    public function minus(float $value): self
+    public function minus(float $latitude, float $longitude = null): self
     {
-        return new static(
-            $this->getLatitudeDeg() - $value,
-            $this->getLongitudeDeg() - $value
+        $longitude = $longitude ?: $latitude;
+
+        return static::make(
+            $this->latitude->degrees - $latitude,
+            $this->longitude->degrees - $longitude
         );
     }
 
     /**
-     * @return float
+     * @return AxisProperty
      */
-    public function getLatitudeDeg(): float
+    public function latitude(): AxisProperty
     {
         return $this->latitude;
     }
 
     /**
-     * @return float
+     * @return AxisProperty
      */
-    public function getLongitudeDeg(): float
+    public function longitude(): AxisProperty
     {
         return $this->longitude;
     }
 
     /**
      * @return float
+     * @deprecated use latitude
      */
-    public function getLatitudeRad(): float
+    public function getLatitudeDeg(): float
     {
-        return \deg2rad($this->latitude);
+        return $this->latitude->degrees;
     }
 
     /**
      * @return float
+     * @deprecated use longitude
+     */
+    public function getLongitudeDeg(): float
+    {
+        return $this->longitude->degrees;
+    }
+
+    /**
+     * @return float
+     * @deprecated use latitude
+     */
+    public function getLatitudeRad(): float
+    {
+        return $this->latitude->radian;
+    }
+
+    /**
+     * @return float
+     * @deprecated use longitude
      */
     public function getLongitudeRad(): float
     {
-        return \deg2rad($this->longitude);
+        return $this->longitude->radian;
     }
 
     /**

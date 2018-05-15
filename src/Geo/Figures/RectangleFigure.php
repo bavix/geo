@@ -4,7 +4,15 @@ namespace Bavix\Geo\Figures;
 
 use Bavix\Geo\Coordinate;
 use Bavix\Geo\Figure;
+use Bavix\Geo\Polygon;
 
+/**
+ * Class RectangleFigure
+ *
+ * @package Bavix\Geo\Figures
+ *
+ * @deprecated
+ */
 class RectangleFigure extends Figure
 {
 
@@ -50,13 +58,13 @@ class RectangleFigure extends Figure
         }
 
         $this->setLeftDown(Coordinate::make(
-            $this->leftUp->getLatitudeDeg(),
-            $this->rightDown->getLongitudeDeg()
+            $this->leftUp->latitude()->degrees,
+            $this->rightDown->longitude()->degrees
         ));
 
         $this->setRightUp(Coordinate::make(
-            $this->rightDown->getLatitudeDeg(),
-            $this->leftUp->getLongitudeDeg()
+            $this->rightDown->latitude()->degrees,
+            $this->leftUp->longitude()->degrees
         ));
     }
 
@@ -70,14 +78,8 @@ class RectangleFigure extends Figure
     public static function make(Coordinate $center, float $dx, float $dy): self
     {
         return new static(
-            Coordinate::make(
-                $center->getLatitudeDeg() - $dx,
-                $center->getLongitudeDeg() - $dy
-            ),
-            Coordinate::make(
-                $center->getLatitudeDeg() + $dx,
-                $center->getLongitudeDeg() + $dy
-            )
+            (clone $center)->minus($dx, $dy),
+            (clone $center)->plus($dx, $dy)
         );
     }
 
@@ -151,6 +153,18 @@ class RectangleFigure extends Figure
     {
         $this->rightDown = $rightDown;
         return $this;
+    }
+
+    /**
+     * @return Polygon
+     */
+    public function toPolygon(): Polygon
+    {
+        return (new Polygon())
+            ->push($this->getLeftUp())
+            ->push($this->getRightUp())
+            ->push($this->getRightDown())
+            ->push($this->getLeftDown());
     }
 
     /**

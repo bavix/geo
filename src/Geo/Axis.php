@@ -2,6 +2,13 @@
 
 namespace Bavix\Geo;
 
+/**
+ * Class Axis
+ *
+ * @package Bavix\Geo
+ *
+ * @deprecated
+ */
 class Axis
 {
 

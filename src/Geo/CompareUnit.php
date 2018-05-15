@@ -2,6 +2,13 @@
 
 namespace Bavix\Geo;
 
+/**
+ * Class CompareUnit
+ *
+ * @package Bavix\Geo
+ *
+ * @deprecated
+ */
 class CompareUnit
 {
 
