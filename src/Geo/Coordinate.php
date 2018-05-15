@@ -41,26 +41,32 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $value
+     * @param float $latitude
+     * @param float $longitude
      * @return Coordinate
      */
-    public function plus(float $value): self
+    public function plus(float $latitude, float $longitude = null): self
     {
+        $longitude = $longitude ?: $latitude;
+
         return static::make(
-            $this->latitude->degrees + $value,
-            $this->longitude->degrees + $value
+            $this->latitude->degrees + $latitude,
+            $this->longitude->degrees + $longitude
         );
     }
 
     /**
-     * @param float $value
+     * @param float $latitude
+     * @param float $longitude
      * @return Coordinate
      */
-    public function minus(float $value): self
+    public function minus(float $latitude, float $longitude = null): self
     {
+        $longitude = $longitude ?: $latitude;
+
         return static::make(
-            $this->latitude->degrees - $value,
-            $this->longitude->degrees - $value
+            $this->latitude->degrees - $latitude,
+            $this->longitude->degrees - $longitude
         );
     }
 

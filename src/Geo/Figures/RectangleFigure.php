@@ -51,13 +51,13 @@ class RectangleFigure extends Figure
         }
 
         $this->setLeftDown(Coordinate::make(
-            $this->leftUp->getLatitudeDeg(),
-            $this->rightDown->getLongitudeDeg()
+            $this->leftUp->latitude()->degrees,
+            $this->rightDown->longitude()->degrees
         ));
 
         $this->setRightUp(Coordinate::make(
-            $this->rightDown->getLatitudeDeg(),
-            $this->leftUp->getLongitudeDeg()
+            $this->rightDown->latitude()->degrees,
+            $this->leftUp->longitude()->degrees
         ));
     }
 
@@ -71,14 +71,8 @@ class RectangleFigure extends Figure
     public static function make(Coordinate $center, float $dx, float $dy): self
     {
         return new static(
-            Coordinate::make(
-                $center->getLatitudeDeg() - $dx,
-                $center->getLongitudeDeg() - $dy
-            ),
-            Coordinate::make(
-                $center->getLatitudeDeg() + $dx,
-                $center->getLongitudeDeg() + $dy
-            )
+            (clone $center)->minus($dx, $dy),
+            (clone $center)->plus($dx, $dy)
         );
     }
 
