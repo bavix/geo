@@ -32,12 +32,12 @@ class Metrical
      */
     public function distance(Coordinate $first, Coordinate $second): Unit
     {
-        $theta = \deg2rad($first->getLongitudeDeg() - $second->getLongitudeDeg());
+        $theta = $first->getLongitudeRad() - $second->getLongitudeRad();
         $partSin = \sin($first->getLatitudeRad()) * \sin($second->getLatitudeRad());
         $partCos = \cos($first->getLatitudeRad()) * \cos($second->getLatitudeRad()) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
-        $miles = NauticalMileUnit::make($dist * 60.);
-        return $miles->to($this->unit);
+        return NauticalMileUnit::make($dist * 60.)
+            ->to($this->unit);
     }
 
     /**
