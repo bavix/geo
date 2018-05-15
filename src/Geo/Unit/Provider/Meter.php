@@ -1,14 +1,17 @@
 <?php
 
-namespace Bavix\Geo\Units;
+namespace Bavix\Geo\Unit\Provider;
 
-class MeterUnit extends KilometerUnit
+class Meter extends Kilometer
 {
 
     /**
-     * @var string
+     * @return string
      */
-    protected $name = 'meter';
+    public static function name(): string
+    {
+        return 'meter';
+    }
 
     /**
      * @return float

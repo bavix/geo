@@ -10,7 +10,7 @@ namespace Bavix\Geo;
  * @property float $degrees
  * @property float $radian
  */
-class AxisProperty extends Property
+class AxisValue extends Value
 {
     /**
      * @var array

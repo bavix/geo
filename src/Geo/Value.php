@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo;
 
-abstract class Property
+abstract class Value
 {
 
     const READ_ONLY = 1;
@@ -38,7 +38,7 @@ abstract class Property
     /**
      * @param array|null $data
      *
-     * @return Property
+     * @return Value
      */
     public static function make(array $data = null): self
     {

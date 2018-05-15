@@ -4,11 +4,11 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
 
-$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\MileUnit::class);
+$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\Mile::class);
 $rectangle = $metrical->rectangle(
     $center,
-    new \Bavix\Geo\Units\MileUnit(4),
-    new \Bavix\Geo\Units\MileUnit(3)
+    new \Bavix\Geo\Units\Mile(4),
+    new \Bavix\Geo\Units\Mile(3)
 );
 
 echo \json_encode([

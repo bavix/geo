@@ -3,7 +3,7 @@
 namespace Bavix\Geo;
 
 use Bavix\Geo\Figures\RectangleFigure;
-use Bavix\Geo\Units\NauticalMileUnit;
+use Bavix\Geo\Units\NauticalMile;
 
 class Metrical
 {
@@ -17,7 +17,7 @@ class Metrical
      * Distance constructor.
      * @param string $unit
      */
-    public function __construct(string $unit = Units\MileUnit::class)
+    public function __construct(string $unit = Units\Mile::class)
     {
         $this->unit = $unit;
     }
@@ -36,7 +36,7 @@ class Metrical
         $partSin = \sin($from->latitude()->radian) * \sin($to->latitude()->radian);
         $partCos = \cos($from->latitude()->radian) * \cos($to->latitude()->radian) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
-        return NauticalMileUnit::make($dist * 60.)
+        return NauticalMile::make($dist * 60.)
             ->to($this->unit);
     }
 
@@ -75,8 +75,8 @@ class Metrical
         $axisX = Axis::make($unitX);
         $axisY = Axis::make($unitY, false);
 
-        $vx = $this->speed($axisX->unit(NauticalMileUnit::class));
-        $vy = $this->speed($axisY->unit(NauticalMileUnit::class));
+        $vx = $this->speed($axisX->unit(NauticalMile::class));
+        $vy = $this->speed($axisY->unit(NauticalMile::class));
         $dx = \deg2rad(\hypot($vx, $vx) / 2.);
         $dy = \deg2rad(\hypot(0, $vy));
 
@@ -160,7 +160,7 @@ class Metrical
      */
     protected function speed(Unit $unit): float
     {
-        return \rad2deg(NauticalMileUnit::fromMiles($unit)->value() / 60.);
+        return \rad2deg(NauticalMile::fromMiles($unit)->value() / 60.);
     }
 
 }

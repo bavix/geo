@@ -6,12 +6,12 @@ class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var AxisProperty
+     * @var AxisValue
      */
     protected $latitude;
 
     /**
-     * @var AxisProperty
+     * @var AxisValue
      */
     protected $longitude;
 
@@ -22,10 +22,10 @@ class Coordinate implements \JsonSerializable
      */
     public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = AxisProperty::make();
+        $this->latitude = AxisValue::make();
         $this->latitude->degrees = $latitude;
 
-        $this->longitude = AxisProperty::make();
+        $this->longitude = AxisValue::make();
         $this->longitude->degrees = $longitude;
     }
 
@@ -71,17 +71,17 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @return AxisProperty
+     * @return AxisValue
      */
-    public function latitude(): AxisProperty
+    public function latitude(): AxisValue
     {
         return $this->latitude;
     }
 
     /**
-     * @return AxisProperty
+     * @return AxisValue
      */
-    public function longitude(): AxisProperty
+    public function longitude(): AxisValue
     {
         return $this->longitude;
     }

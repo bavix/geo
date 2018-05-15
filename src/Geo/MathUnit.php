@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo;
 
-use Bavix\Geo\Units\MileUnit;
+use Bavix\Geo\Units\Mile;
 
 /**
  * Class MathUnit
@@ -31,41 +31,45 @@ class MathUnit
     /**
      * @param Unit|float $unit
      * @param Unit|float $value
-     * @return MileUnit
+     *
+     * @return Mile
      */
-    public static function add($unit, $value): MileUnit
+    public static function add($unit, $value): Mile
     {
-        return new MileUnit(static::miles($unit) + static::miles($value));
+        return new Mile(static::miles($unit) + static::miles($value));
     }
     
     /**
      * @param Unit|float $unit
      * @param Unit|float $value
-     * @return MileUnit
+     *
+     * @return Mile
      */
-    public static function sub($unit, $value): MileUnit
+    public static function sub($unit, $value): Mile
     {
-        return new MileUnit(static::miles($unit) - static::miles($value));
+        return new Mile(static::miles($unit) - static::miles($value));
     }
     
     /**
      * @param Unit|float $unit
      * @param Unit|float $value
-     * @return MileUnit
+     *
+     * @return Mile
      */
-    public static function div($unit, $value): MileUnit
+    public static function div($unit, $value): Mile
     {
-        return new MileUnit(static::miles($unit) / static::miles($value));
+        return new Mile(static::miles($unit) / static::miles($value));
     }
     
     /**
      * @param Unit|float $unit
      * @param Unit|float $value
-     * @return MileUnit
+     *
+     * @return Mile
      */
-    public static function mul($unit, $value): MileUnit
+    public static function mul($unit, $value): Mile
     {
-        return new MileUnit(static::miles($unit) * static::miles($value));
+        return new Mile(static::miles($unit) * static::miles($value));
     }
     
 }

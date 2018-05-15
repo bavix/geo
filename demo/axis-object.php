@@ -2,7 +2,7 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$axis = new \Bavix\Geo\AxisProperty();
+$axis = new \Bavix\Geo\AxisValue();
 
 $axis->degrees = 100;
 var_dump($axis->radian, $axis->degrees);

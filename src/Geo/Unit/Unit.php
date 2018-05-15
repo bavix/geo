@@ -2,7 +2,12 @@
 
 namespace Bavix\Geo;
 
-abstract class Unit implements \JsonSerializable
+/**
+ * Class Unit
+ *
+ * @package Bavix\Geo
+ */
+class Unit
 {
 
     /**
