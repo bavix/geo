@@ -29,6 +29,38 @@ class RectangleFigure extends Figure
     protected $rightDown;
 
     /**
+     * RectangleFigure constructor.
+     * @param Coordinate|null $leftUp
+     * @param Coordinate|null $rightDown
+     */
+    public function __construct(Coordinate $leftUp = null, Coordinate $rightDown = null)
+    {
+        $this->leftUp = $leftUp;
+        $this->rightDown = $rightDown;
+        $this->calculate();
+    }
+
+    /**
+     * @return void
+     */
+    protected function calculate()
+    {
+        if (!$this->leftUp || !$this->rightDown) {
+            return;
+        }
+
+        $this->setLeftDown(Coordinate::make(
+            $this->leftUp->getLatitudeDeg(),
+            $this->rightDown->getLongitudeDeg()
+        ));
+
+        $this->setRightUp(Coordinate::make(
+            $this->rightDown->getLatitudeDeg(),
+            $this->leftUp->getLongitudeDeg()
+        ));
+    }
+
+    /**
      * @param Coordinate $center
      * @param float $dx
      * @param float $dy
@@ -37,27 +69,16 @@ class RectangleFigure extends Figure
      */
     public static function make(Coordinate $center, float $dx, float $dy): self
     {
-        return (new static())
-
-            ->setLeftUp(Coordinate::make(
+        return new static(
+            Coordinate::make(
                 $center->getLatitudeDeg() - $dx,
                 $center->getLongitudeDeg() - $dy
-            ))
-
-            ->setLeftDown(Coordinate::make(
-                $center->getLatitudeDeg() - $dx,
-                $center->getLongitudeDeg() + $dy
-            ))
-
-            ->setRightUp(Coordinate::make(
-                $center->getLatitudeDeg() + $dx,
-                $center->getLongitudeDeg() - $dy
-            ))
-
-            ->setRightDown(Coordinate::make(
+            ),
+            Coordinate::make(
                 $center->getLatitudeDeg() + $dx,
                 $center->getLongitudeDeg() + $dy
-            ));
+            )
+        );
     }
 
     /**
