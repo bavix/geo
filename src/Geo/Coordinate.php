@@ -37,7 +37,7 @@ class Coordinate implements \JsonSerializable
      * @param float $latitude
      * @param float $longitude
      *
-     * @return Coordinate
+     * @return static
      */
     public static function make(float $latitude, float $longitude): self
     {
@@ -47,7 +47,7 @@ class Coordinate implements \JsonSerializable
     /**
      * @param float $latitude
      * @param float $longitude
-     * @return Coordinate
+     * @return static
      */
     public function plus(float $latitude, float $longitude = null): self
     {
@@ -62,15 +62,13 @@ class Coordinate implements \JsonSerializable
     /**
      * @param float $latitude
      * @param float $longitude
-     * @return Coordinate
+     * @return static
      */
     public function minus(float $latitude, float $longitude = null): self
     {
-        $longitude = $longitude ?: $latitude;
-
-        return static::make(
-            $this->latitude->degrees - $latitude,
-            $this->longitude->degrees - $longitude
+        return $this->plus(
+            -$latitude,
+            $longitude ? -$longitude : null
         );
     }
 

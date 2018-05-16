@@ -4,12 +4,12 @@ include_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 $center = new \Bavix\Geo\Coordinate(67.852064, -120.020849);
 
-$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\Mile::class);
-$square = $metrical->squareByHypotenuse($center, new \Bavix\Geo\Units\Mile(100));
+$unit = new \Bavix\Geo\Unit\Item();
+$unit->miles = 100;
 
-$polygon = $square->toPolygon();
+$metrical = new \Bavix\Geo\Metrical();
+$square = $metrical->squareByHypotenuse($center, $unit);
 
-var_dump($polygon->contains(\Bavix\Geo\Coordinate::make(
-    $square->getLeftUp()->getLatitudeDeg(),
-    $square->getLeftUp()->getLongitudeDeg()
-)));
+$point = $square->at(3);
+
+var_dump($square->contains($point));

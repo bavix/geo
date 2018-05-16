@@ -34,6 +34,28 @@ abstract class Geometrable implements \Countable
     }
 
     /**
+     * @return Coordinate
+     */
+    public function pop(): Coordinate
+    {
+        return \array_pop($this->points);
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return Coordinate
+     */
+    public function at(int $index): Coordinate
+    {
+        if (empty($this->points[$index])) {
+            throw new \InvalidArgumentException('Point not found');
+        }
+
+        return $this->points[$index];
+    }
+
+    /**
      * @return Coordinate[]
      */
     public function points(): array

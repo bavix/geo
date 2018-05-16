@@ -33,7 +33,7 @@ abstract class Valable
     /**
      * @param array|null $data
      *
-     * @return Valable
+     * @return static
      */
     public static function make(array $data = null): self
     {
