@@ -6,10 +6,19 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\UnitInterface;
+use Bavix\Geo\Unit\Unit;
+use Bavix\Geo\Unit\Unitable;
 
-class Wheel implements UnitInterface
+class Wheel extends Unitable
 {
+
+    /**
+     * @return string
+     */
+    public static function property(): string
+    {
+        return Unit::PROPERTY_WHEELS;
+    }
 
     /**
      * @return string

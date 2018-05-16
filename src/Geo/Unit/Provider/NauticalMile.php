@@ -2,10 +2,19 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\UnitInterface;
+use Bavix\Geo\Unit\Unit;
+use Bavix\Geo\Unit\Unitable;
 
-class NauticalMile implements UnitInterface
+class NauticalMile extends Unitable
 {
+
+    /**
+     * @return string
+     */
+    public static function property(): string
+    {
+        return Unit::PROPERTY_NAUTICAL_MILES;
+    }
 
     /**
      * @return string

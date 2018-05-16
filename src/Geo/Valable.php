@@ -54,7 +54,6 @@ abstract class Valable
         return $self;
     }
 
-
     /**
      * @param string $name
      */
@@ -69,12 +68,12 @@ abstract class Valable
      * @param string $name
      * @param        $value
      */
-    protected function change(string $name, $value)
+    protected function modifies(string $name, $value)
     {
         $this->data[$name] = $value;
 
-        if (isset($this->properties[$name]['depends'])) {
-            $this->depends($name, $this->properties[$name]['depends']);
+        if (isset($this->properties[$name]['modify'])) {
+            $this->modify($name, $this->properties[$name]['modify']);
         }
     }
 
@@ -82,17 +81,41 @@ abstract class Valable
      * @param string $name
      * @param array  $props
      */
-    protected function depends(string $name, array $props)
+    protected function modify(string $name, array $props)
     {
         foreach ($props as $prop => $callback) {
-            if (\is_int($prop)) {
-                $prop = $callback;
-                $this->data[$prop] = $this->{$callback . 'Get'}($this->data[$name]);
+            if (class_exists($callback)) {
+                $this->dataSet($prop, $this->classModify($callback, $name, $prop));
                 continue;
             }
 
-            $this->data[$prop] = $callback($this->data[$name]);
+            $this->dataSet($prop, $this->$callback($this->data[$name], $name, $prop));
         }
+    }
+
+    protected function dataSet(string $prop, $mixed)
+    {
+        if ($mixed !== null) {
+            $this->data[$prop] = $mixed;
+        }
+    }
+
+    /**
+     * @param string $class
+     * @param string $name
+     * @param string $prop
+     *
+     * @return mixed
+     */
+    protected function classModify(string $class, string $name, string $prop)
+    {
+        $object = new $class();
+
+        if (!($object instanceof ValueInterface)) {
+            throw new \InvalidArgumentException('Interface ' . ValueInterface::class . ' not found');
+        }
+
+        return $object->modify($this, $name, $prop);
     }
 
     /**
@@ -127,7 +150,7 @@ abstract class Valable
             throw new \InvalidArgumentException('Magic __set(\'' . $name . '\') is not installed');
         }
 
-        $this->change($name, $value);
+        $this->modifies($name, $value);
     }
 
     /**

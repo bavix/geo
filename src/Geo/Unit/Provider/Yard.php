@@ -2,10 +2,19 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\UnitInterface;
+use Bavix\Geo\Unit\Unit;
+use Bavix\Geo\Unit\Unitable;
 
-class Yard implements UnitInterface
+class Yard extends Unitable
 {
+
+    /**
+     * @return string
+     */
+    public static function property(): string
+    {
+        return Unit::PROPERTY_YARDS;
+    }
 
     /**
      * @return string
@@ -20,7 +29,7 @@ class Yard implements UnitInterface
      */
     public static function oneMile(): float
     {
-        return 0.000568182;
+        return 1760;
     }
 
 }

@@ -12,6 +12,7 @@ namespace Bavix\Geo;
  */
 class AxisValable extends Valable
 {
+
     const PROPERTY_DEGREES = 'degrees';
     const PROPERTY_RADIAN = 'radian';
 
@@ -21,15 +22,34 @@ class AxisValable extends Valable
     protected $properties = [
         self::PROPERTY_DEGREES => [
             'type' => self::WRITE,
-            'depends' => [
+            'modify' => [
                 self::PROPERTY_RADIAN => 'deg2rad'
             ],
         ],
         self::PROPERTY_RADIAN => [
             'type' => self::WRITE,
-            'depends' => [
+            'modify' => [
                 self::PROPERTY_DEGREES => 'rad2deg'
             ],
         ],
     ];
+
+    /**
+     * @param float $value
+     * @return float
+     */
+    protected function deg2rad(float $value): float
+    {
+        return \deg2rad($value);
+    }
+
+    /**
+     * @param float $value
+     * @return float
+     */
+    protected function rad2deg(float $value): float
+    {
+        return \rad2deg($value);
+    }
+
 }

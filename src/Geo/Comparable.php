@@ -4,5 +4,5 @@ namespace Bavix\Geo;
 
 interface Comparable
 {
-    public function compareTo(self $object): int;
+    public function compareTo($object): int;
 }

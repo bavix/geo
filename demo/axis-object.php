@@ -11,5 +11,5 @@ $axis->radian = 3;
 var_dump($axis->radian, $axis->degrees);
 
 $proxy = $axis->proxy();
-$proxy->degrees = 99;
+//$proxy->degrees = 99;
 var_dump($proxy->degrees);

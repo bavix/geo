@@ -2,8 +2,15 @@
 
 namespace Bavix\Geo\Unit;
 
-interface UnitInterface
+use Bavix\Geo\ValueInterface;
+
+interface UnitInterface extends ValueInterface
 {
+    /**
+     * @return string
+     */
+    public static function property(): string;
+
     /**
      * @return string
      */
