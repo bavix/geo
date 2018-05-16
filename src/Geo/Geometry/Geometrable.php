@@ -7,6 +7,9 @@ use Bavix\Geo\Coordinate;
 abstract class Geometrable implements \Countable
 {
 
+    /**
+     * @var int
+     */
     protected $numberPoints;
 
     /**
@@ -21,7 +24,8 @@ abstract class Geometrable implements \Countable
     public function push(Coordinate $point): self
     {
         if ($this->numberPoints && $this->count() >= $this->numberPoints) {
-            throw new \InvalidArgumentException('This geometric shape can\'t have ' . ($this->numberPoints + 1) .
+            throw new \InvalidArgumentException('This geometric shape can\'t have ' .
+                ($this->numberPoints + 1) .
                 ' and more points');
         }
 
@@ -88,7 +92,9 @@ abstract class Geometrable implements \Countable
         $longitudes = $this->longitudes();
 
         for ($curr = 0, $prev = $count - 1; $curr < $count; $prev = $curr++) {
-            if (($longitudes[$curr] > $point->longitude->degrees) ^ ($longitudes[$prev] > $point->longitude->degrees) &&
+            if (($longitudes[$curr] > $point->longitude->degrees) ^
+                ($longitudes[$prev] > $point->longitude->degrees) &&
+
                 $point->latitude->degrees < ($latitudes[$prev] - $latitudes[$curr])
                 * ($point->longitude->degrees - $longitudes[$curr])
                 / ($longitudes[$prev] - $longitudes[$curr])
