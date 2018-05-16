@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Unit;
 
-use Bavix\Geo\Valable;
+use Bavix\Geo\Value\Valable;
 
 abstract class Unitable implements UnitInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bavix\Geo;
+namespace Bavix\Geo\Value;
 
 interface ValueInterface
 {

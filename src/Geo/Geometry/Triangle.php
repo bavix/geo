@@ -1,6 +1,6 @@
 <?php
 
-namespace Bavix\Geo;
+namespace Bavix\Geo\Geometry;
 
 class Triangle extends Geometrable
 {

@@ -1,6 +1,8 @@
 <?php
 
-namespace Bavix\Geo;
+namespace Bavix\Geo\Geometry;
+
+use Bavix\Geo\Coordinate;
 
 abstract class Geometrable implements \Countable
 {

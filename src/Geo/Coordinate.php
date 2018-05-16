@@ -2,16 +2,18 @@
 
 namespace Bavix\Geo;
 
+use Bavix\Geo\Value\Axis;
+
 class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var AxisValable
+     * @var Axis
      */
     public $latitude;
 
     /**
-     * @var AxisValable
+     * @var Axis
      */
     public $longitude;
 
@@ -22,11 +24,11 @@ class Coordinate implements \JsonSerializable
      */
     public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = AxisValable::make();
+        $this->latitude = Axis::make();
         $this->latitude->degrees = $latitude;
         $this->latitude = $this->latitude->proxy(); // readOnly
 
-        $this->longitude = AxisValable::make();
+        $this->longitude = Axis::make();
         $this->longitude->degrees = $longitude;
         $this->longitude = $this->longitude->proxy();
     }

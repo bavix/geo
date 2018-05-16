@@ -3,7 +3,7 @@
 namespace Bavix\Geo\Unit;
 
 use Bavix\Geo\Comparable;
-use Bavix\Geo\Valable;
+use Bavix\Geo\Value\Valable;
 
 /**
  * Class Unit

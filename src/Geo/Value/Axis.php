@@ -1,6 +1,6 @@
 <?php
 
-namespace Bavix\Geo;
+namespace Bavix\Geo\Value;
 
 /**
  * Class AxisProperty
@@ -10,7 +10,7 @@ namespace Bavix\Geo;
  * @property float $degrees
  * @property float $radian
  */
-class AxisValable extends Valable
+class Axis extends Valable
 {
 
     const PROPERTY_DEGREES = 'degrees';
