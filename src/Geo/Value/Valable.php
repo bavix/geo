@@ -41,6 +41,26 @@ abstract class Valable
     }
 
     /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return static
+     */
+    public static function __callStatic(string $name, array $arguments): self
+    {
+        $name = \preg_replace('~([A-Z]{1})~', '_$1', $name, 1);
+        list($method, $property) = \explode('_', $name, 2);
+
+        if ($method !== 'from') {
+            throw new \InvalidArgumentException('Method ' . $method . ' not found');
+        }
+
+        return static::make([
+            \lcfirst($property) => $arguments[0] ?? 0
+        ]);
+    }
+
+    /**
      * @return static
      */
     public function proxy(): self

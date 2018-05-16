@@ -2,10 +2,14 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$unit1 = new \Bavix\Geo\Unit\Distance();
+use Bavix\Geo\Unit\Provider\Kilometer;
+use Bavix\Geo\Unit\Distance;
+
+$unit1 = new Distance();
 $unit1->miles = 10;
 
-$unit2 = new \Bavix\Geo\Unit\Distance();
-$unit2->kilometers = 10 * \Bavix\Geo\Unit\Provider\Kilometer::oneMile();
+$unit2 = new Distance([
+    Distance::PROPERTY_KILOMETERS => 10 * Kilometer::oneMile()
+]);
 
 var_dump($unit1->compareTo($unit2)->lessThanOrEqual());

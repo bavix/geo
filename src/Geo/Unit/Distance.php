@@ -13,9 +13,16 @@ use Bavix\Geo\Value\Valable;
  * @property float $yards
  * @property float $meters
  * @property float $kilometers
- * @property float miles
+ * @property float $miles
  * @property float $nauticalMiles
  * @property float $wheels
+ *
+ * @method static Distance fromYards(float $value)
+ * @method static Distance fromMeters(float $value)
+ * @method static Distance fromKilometers(float $value)
+ * @method static Distance fromMiles(float $value)
+ * @method static Distance fromNauticalMiles(float $value)
+ * @method static Distance fromWheels(float $value)
  */
 class Distance extends Valable
 {

@@ -9,6 +9,9 @@ namespace Bavix\Geo\Value;
  *
  * @property float $degrees
  * @property float $radian
+ *
+ * @method static Axis fromDegrees(float $value)
+ * @method static Axis fromRadian(float $value)
  */
 class Axis extends Valable
 {

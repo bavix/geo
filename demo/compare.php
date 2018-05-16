@@ -2,10 +2,12 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
+use Bavix\Geo\Comparator\Comparable;
+
 class Datum
 {
 
-    use \Bavix\Geo\Comparator\Comparable;
+    use Comparable;
 
     /**
      * @var float

@@ -2,9 +2,10 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$axis = new \Bavix\Geo\Value\Axis();
+use Bavix\Geo\Value\Axis;
 
-$axis->degrees = 100;
+$axis = Axis::fromDegrees(100);
+
 var_dump($axis->radian, $axis->degrees);
 
 $axis->radian = 3;

@@ -2,17 +2,16 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
+use Bavix\Geo\Unit\Distance;
+use Bavix\Geo\Coordinate;
+use Bavix\Geo\Metrical;
 
-$unitX = \Bavix\Geo\Unit\Distance::make([
-    \Bavix\Geo\Unit\Distance::PROPERTY_MILES => 4
-]);
+$center = new Coordinate(44.764558, 39.881960);
 
-$unitY = \Bavix\Geo\Unit\Distance::make([
-    \Bavix\Geo\Unit\Distance::PROPERTY_MILES => 3
-]);
+$unitX = Distance::fromMiles(4);
+$unitY = Distance::fromMiles(3);
 
-$metrical   = new \Bavix\Geo\Metrical();
+$metrical   = new Metrical();
 $quadrangle = $metrical->rectangle(
     $center,
     $unitX,
