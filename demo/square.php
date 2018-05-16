@@ -5,8 +5,8 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 //$center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
 $center = new \Bavix\Geo\Coordinate(67.852064, -120.020849);
 
-$unit = \Bavix\Geo\Unit\Item::make([
-    \Bavix\Geo\Unit\Item::PROPERTY_MILES => 100
+$unit = \Bavix\Geo\Unit\Distance::make([
+    \Bavix\Geo\Unit\Distance::PROPERTY_MILES => 100
 ]);
 
 $metrical   = new \Bavix\Geo\Metrical();

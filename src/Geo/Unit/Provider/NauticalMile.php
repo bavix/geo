@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\Item;
+use Bavix\Geo\Unit\Distance;
 use Bavix\Geo\Unit\Unitable;
 
 class NauticalMile extends Unitable
@@ -13,7 +13,7 @@ class NauticalMile extends Unitable
      */
     public static function property(): string
     {
-        return Item::PROPERTY_NAUTICAL_MILES;
+        return Distance::PROPERTY_NAUTICAL_MILES;
     }
 
     /**

@@ -17,7 +17,7 @@ use Bavix\Geo\Value\Valable;
  * @property float $nauticalMiles
  * @property float $wheels
  */
-class Item extends Valable
+class Distance extends Valable
 {
 
     use Comparable;

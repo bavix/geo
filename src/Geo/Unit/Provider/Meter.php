@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\Item;
+use Bavix\Geo\Unit\Distance;
 
 class Meter extends Kilometer
 {
@@ -12,7 +12,7 @@ class Meter extends Kilometer
      */
     public static function property(): string
     {
-        return Item::PROPERTY_METERS;
+        return Distance::PROPERTY_METERS;
     }
 
     /**

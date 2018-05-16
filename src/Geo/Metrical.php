@@ -4,18 +4,18 @@ namespace Bavix\Geo;
 
 use Bavix\Geo\Geometry\Line;
 use Bavix\Geo\Geometry\Quadrangle;
-use Bavix\Geo\Unit\Item;
+use Bavix\Geo\Unit\Distance;
 
 class Metrical
 {
 
     /**
      * @param Coordinate $center
-     * @param Item       $unit
+     * @param Distance   $unit
      *
      * @return Quadrangle
      */
-    public function squareByHypotenuse(Coordinate $center, Item $unit): Quadrangle
+    public function squareByHypotenuse(Coordinate $center, Distance $unit): Quadrangle
     {
         $item = clone $unit;
         $item->miles /= \sqrt(2);
@@ -24,21 +24,23 @@ class Metrical
 
     /**
      * @param Coordinate $center
-     * @param Item $unit
+     * @param Distance   $unit
+     *
      * @return Quadrangle
      */
-    public function square(Coordinate $center, Item $unit): Quadrangle
+    public function square(Coordinate $center, Distance $unit): Quadrangle
     {
         return $this->rectangle($center, $unit, $unit);
     }
 
     /**
      * @param Coordinate $center
-     * @param Item $unitX
-     * @param Item $unitY
+     * @param Distance   $unitX
+     * @param Distance   $unitY
+     *
      * @return Quadrangle
      */
-    public function rectangle(Coordinate $center, Item $unitX, Item $unitY): Quadrangle
+    public function rectangle(Coordinate $center, Distance $unitX, Distance $unitY): Quadrangle
     {
         $vx = $this->speed($unitX);
         $vy = $this->speed($unitY);
@@ -65,13 +67,13 @@ class Metrical
     }
 
     /**
-     * @param Line $line
-     * @param Item $unit
-     * @param bool $isAxisX
+     * @param Line     $line
+     * @param Distance $unit
+     * @param bool     $isAxisX
      *
      * @return float
      */
-    protected function axisComputed(Line $line, Item $unit, bool $isAxisX = true): float
+    protected function axisComputed(Line $line, Distance $unit, bool $isAxisX = true): float
     {
         $computed = $line->pop();
         $center = $line->pop();
@@ -111,11 +113,11 @@ class Metrical
     }
 
     /**
-     * @param Item $axis
+     * @param Distance $axis
      *
      * @return float
      */
-    protected function computedEps(Item $axis): float
+    protected function computedEps(Distance $axis): float
     {
         return \max(
             \round($axis->miles, 5) / 1e5,
@@ -124,11 +126,11 @@ class Metrical
     }
 
     /**
-     * @param Item $unit
+     * @param Distance $unit
      *
      * @return float
      */
-    protected function speed(Item $unit): float
+    protected function speed(Distance $unit): float
     {
         return \rad2deg($unit->nauticalMiles / 60.);
     }

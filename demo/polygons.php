@@ -4,7 +4,7 @@ include_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 $center = new \Bavix\Geo\Coordinate(67.852064, -120.020849);
 
-$unit = new \Bavix\Geo\Unit\Item();
+$unit = new \Bavix\Geo\Unit\Distance();
 $unit->miles = 100;
 
 $metrical = new \Bavix\Geo\Metrical();

@@ -4,12 +4,12 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
 
-$unitX = \Bavix\Geo\Unit\Item::make([
-    \Bavix\Geo\Unit\Item::PROPERTY_MILES => 4
+$unitX = \Bavix\Geo\Unit\Distance::make([
+    \Bavix\Geo\Unit\Distance::PROPERTY_MILES => 4
 ]);
 
-$unitY = \Bavix\Geo\Unit\Item::make([
-    \Bavix\Geo\Unit\Item::PROPERTY_MILES => 3
+$unitY = \Bavix\Geo\Unit\Distance::make([
+    \Bavix\Geo\Unit\Distance::PROPERTY_MILES => 3
 ]);
 
 $metrical   = new \Bavix\Geo\Metrical();
