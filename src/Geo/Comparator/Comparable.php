@@ -13,11 +13,11 @@ trait Comparable
 
     /**
      * @param self $object
-     * @return Compare
+     * @return Comparator
      */
-    public function compareTo(self $object): Compare
+    public function compareTo(self $object): Comparator
     {
-        return new Compare($this->comparison($object));
+        return new Comparator($this->comparison($object));
     }
 
 }

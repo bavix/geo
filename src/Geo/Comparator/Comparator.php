@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Comparator;
 
-class Compare
+class Comparator
 {
 
     /**

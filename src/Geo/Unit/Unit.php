@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Unit;
 
-use Bavix\Geo\Comparable;
+use Bavix\Geo\Comparator\Comparable;
 use Bavix\Geo\Value\Valable;
 
 /**
@@ -17,8 +17,10 @@ use Bavix\Geo\Value\Valable;
  * @property float $nauticalMiles
  * @property float $wheels
  */
-class Unit extends Valable implements Comparable
+class Unit extends Valable
 {
+
+    use Comparable;
 
     const PROPERTY_YARDS = 'yards';
     const PROPERTY_METERS = 'meters';
@@ -74,10 +76,10 @@ class Unit extends Valable implements Comparable
     ];
 
     /**
-     * @param Unit $object
+     * @param self $object
      * @return int
      */
-    public function compareTo($object): int
+    public function comparison(self $object): int
     {
         return $this->miles <=> $object->miles;
     }
