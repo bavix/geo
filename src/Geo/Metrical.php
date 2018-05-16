@@ -2,9 +2,6 @@
 
 namespace Bavix\Geo;
 
-use Bavix\Geo\Figures\RectangleFigure;
-use Bavix\Geo\Units\NauticalMile;
-
 class Metrical
 {
 
@@ -32,9 +29,9 @@ class Metrical
      */
     public function distance(Coordinate $from, Coordinate $to): Unit
     {
-        $theta = $from->longitude()->radian - $to->longitude()->radian;
-        $partSin = \sin($from->latitude()->radian) * \sin($to->latitude()->radian);
-        $partCos = \cos($from->latitude()->radian) * \cos($to->latitude()->radian) * \cos($theta);
+        $theta = $from->longitude->radian - $to->longitude->radian;
+        $partSin = \sin($from->latitude->radian) * \sin($to->latitude->radian);
+        $partCos = \cos($from->latitude->radian) * \cos($to->latitude->radian) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
         return NauticalMile::make($dist * 60.)
             ->to($this->unit);
@@ -81,13 +78,13 @@ class Metrical
         $dy = \deg2rad(\hypot(0, $vy));
 
         $computedX = new Coordinate(
-            $center->latitude()->degrees + $dx,
-            $center->longitude()->degrees
+            $center->latitude->degrees + $dx,
+            $center->longitude->degrees
         );
 
         $computedY = new Coordinate(
-            $center->latitude()->degrees,
-            $center->longitude()->degrees + $dy
+            $center->latitude->degrees,
+            $center->longitude->degrees + $dy
         );
 
         $latitude = $this->axisComputed($center, $computedX, $axisX);
@@ -123,8 +120,8 @@ class Metrical
             }
 
             $computed = $computed::make(
-                $computed->latitude()->degrees + $eps * $axis->isAxisX(),
-                $computed->longitude()->degrees + $eps * !$axis->isAxisX()
+                $computed->latitude->degrees + $eps * $axis->isAxisX(),
+                $computed->longitude->degrees + $eps * !$axis->isAxisX()
             );
 
             $iterator++;
@@ -132,9 +129,9 @@ class Metrical
         }
 
         if ($axis->isAxisX()) {
-            $result = $center->latitude()->degrees - $computed->latitude()->degrees;
+            $result = $center->latitude->degrees - $computed->latitude->degrees;
         } else {
-            $result = $center->longitude()->degrees - $computed->longitude()->degrees;
+            $result = $center->longitude->degrees - $computed->longitude->degrees;
         }
 
         return \abs($result) / $axis->unit()->miles();

@@ -6,14 +6,14 @@ class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var AxisValue
+     * @var AxisValable
      */
-    protected $latitude;
+    public $latitude;
 
     /**
-     * @var AxisValue
+     * @var AxisValable
      */
-    protected $longitude;
+    public $longitude;
 
     /**
      * Coordinate constructor.
@@ -22,11 +22,13 @@ class Coordinate implements \JsonSerializable
      */
     public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = AxisValue::make();
+        $this->latitude = AxisValable::make();
         $this->latitude->degrees = $latitude;
+        $this->latitude = $this->latitude->proxy(); // readOnly
 
-        $this->longitude = AxisValue::make();
+        $this->longitude = AxisValable::make();
         $this->longitude->degrees = $longitude;
+        $this->longitude = $this->longitude->proxy();
     }
 
     /**
@@ -68,58 +70,6 @@ class Coordinate implements \JsonSerializable
             $this->latitude->degrees - $latitude,
             $this->longitude->degrees - $longitude
         );
-    }
-
-    /**
-     * @return AxisValue
-     */
-    public function latitude(): AxisValue
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * @return AxisValue
-     */
-    public function longitude(): AxisValue
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * @return float
-     * @deprecated use latitude
-     */
-    public function getLatitudeDeg(): float
-    {
-        return $this->latitude->degrees;
-    }
-
-    /**
-     * @return float
-     * @deprecated use longitude
-     */
-    public function getLongitudeDeg(): float
-    {
-        return $this->longitude->degrees;
-    }
-
-    /**
-     * @return float
-     * @deprecated use latitude
-     */
-    public function getLatitudeRad(): float
-    {
-        return $this->latitude->radian;
-    }
-
-    /**
-     * @return float
-     * @deprecated use longitude
-     */
-    public function getLongitudeRad(): float
-    {
-        return $this->longitude->radian;
     }
 
     /**

@@ -6,103 +6,31 @@ namespace Bavix\Geo;
  * Class Unit
  *
  * @package Bavix\Geo
+ *
+ * @property float $yards
+ * @property float $meters
+ * @property float $kilometers
+ * @property float miles
+ * @property float $nauticalMiles
+ * @property float $wheels
  */
-class Unit
+class Unit extends Valable implements Comparable
 {
 
-    /**
-     * @var string
-     */
-    protected $name;
+    const PROPERTY_YARDS = 'yards';
+    const PROPERTY_METERS = 'meters';
+    const PROPERTY_KILOMETERS = 'kilometers';
+    const PROPERTY_MILES = 'miles';
+    const PROPERTY_NAUTICAL_MILES = 'nauticalMiles';
+    const PROPERTY_WHEELS = 'wheels';
 
     /**
-     * @var float
+     * @param self $object
+     * @return int
      */
-    protected $value;
-
-    /**
-     * @var float
-     */
-    protected $miles;
-
-    /**
-     * Unit constructor.
-     * @param float $value
-     */
-    public function __construct(float $value)
+    public function compareTo(self $object): int
     {
-        $this->value = $value;
+        return $this->miles <=> $object->miles;
     }
-
-    /**
-     * @return float
-     */
-    public function value(): float
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param float $value
-     * @return Unit
-     */
-    public static function make(float $value): self
-    {
-        return new static($value);
-    }
-
-    /**
-     * @param float|self $miles
-     * @return static
-     */
-    public static function fromMiles($miles): self
-    {
-        if (\is_object($miles) && $miles instanceof self) {
-            $miles = $miles->miles();
-        }
-
-        return new static($miles * static::oneMile());
-    }
-
-    /**
-     * @param string|self $unit
-     * @return static
-     */
-    public function to($unit)
-    {
-        /**
-         * @var self $unit
-         */
-        return $unit::fromMiles($this->miles());
-    }
-
-    /**
-     * @return float
-     */
-    public function miles(): float
-    {
-        if (!$this->miles) {
-            $this->miles = $this->value / static::oneMile();
-        }
-
-        return $this->miles;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return [
-            'name' => $this->name,
-            'value' => $this->value,
-            'miles' => $this->miles()
-        ];
-    }
-
-    /**
-     * @return float
-     */
-    abstract public static function oneMile(): float;
 
 }

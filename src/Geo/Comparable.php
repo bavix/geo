@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo;
 
-abstract class Comparable
+interface Comparable
 {
-    abstract public function compareTo(self $object): int;
+    public function compareTo(self $object): int;
 }

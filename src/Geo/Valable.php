@@ -2,16 +2,11 @@
 
 namespace Bavix\Geo;
 
-abstract class Value
+abstract class Valable
 {
 
     const READ_ONLY = 1;
     const WRITE = 2;
-
-    /**
-     * @var string
-     */
-    protected $depend;
 
     /**
      * @var array
@@ -38,11 +33,25 @@ abstract class Value
     /**
      * @param array|null $data
      *
-     * @return Value
+     * @return Valable
      */
     public static function make(array $data = null): self
     {
         return new static($data);
+    }
+
+    /**
+     * @return static
+     */
+    public function proxy(): self
+    {
+        $self = clone $this;
+
+        foreach ((array)$this->properties as $key => $value) {
+            $self->properties[$key]['type'] = self::READ_ONLY;
+        }
+
+        return $self;
     }
 
 
@@ -64,8 +73,8 @@ abstract class Value
     {
         $this->data[$name] = $value;
 
-        if (isset($this->properties[$name]['update'])) {
-            $this->update($name, $this->properties[$name]['update']);
+        if (isset($this->properties[$name]['depends'])) {
+            $this->depends($name, $this->properties[$name]['depends']);
         }
     }
 
@@ -73,7 +82,7 @@ abstract class Value
      * @param string $name
      * @param array  $props
      */
-    protected function update(string $name, array $props)
+    protected function depends(string $name, array $props)
     {
         foreach ($props as $prop => $callback) {
             if (\is_int($prop)) {
