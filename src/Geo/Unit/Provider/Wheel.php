@@ -6,7 +6,7 @@
 
 namespace Bavix\Geo\Unit\Provider;
 
-use Bavix\Geo\Unit\Unit;
+use Bavix\Geo\Unit\Item;
 use Bavix\Geo\Unit\Unitable;
 
 class Wheel extends Unitable
@@ -17,7 +17,7 @@ class Wheel extends Unitable
      */
     public static function property(): string
     {
-        return Unit::PROPERTY_WHEELS;
+        return Item::PROPERTY_WHEELS;
     }
 
     /**

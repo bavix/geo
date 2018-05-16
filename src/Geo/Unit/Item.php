@@ -17,7 +17,7 @@ use Bavix\Geo\Value\Valable;
  * @property float $nauticalMiles
  * @property float $wheels
  */
-class Unit extends Valable
+class Item extends Valable
 {
 
     use Comparable;
@@ -79,7 +79,7 @@ class Unit extends Valable
      * @param self $object
      * @return int
      */
-    public function comparison(self $object): int
+    protected function comparison(self $object): int
     {
         return $this->miles <=> $object->miles;
     }

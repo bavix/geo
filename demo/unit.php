@@ -2,17 +2,11 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$unit = new \Bavix\Geo\Unit\Unit();
-$unit->miles = 10;
+$unit1 = new \Bavix\Geo\Unit\Item();
+$unit1->miles = 10;
 
-var_dump($unit);
+$unit2 = new \Bavix\Geo\Unit\Item();
+$unit2->kilometers = 10 * \Bavix\Geo\Unit\Provider\Kilometer::oneMile();
 
-$unit->yards = \Bavix\Geo\Unit\Provider\Yard::oneMile();
-var_dump($unit);
-
-$unit->miles = 1;
-var_dump($unit);
-
-$unit->wheels = \Bavix\Geo\Unit\Provider\Wheel::oneMile() * 2;
-var_dump($unit);
+var_dump($unit1->compareTo($unit2)->lessThanOrEqual());
 

@@ -15,11 +15,11 @@ abstract class Unitable implements UnitInterface
      */
     public static function modify(Valable $object, string $name, string $prop)
     {
-        if ($name === Unit::PROPERTY_MILES && $prop === static::property()) {
+        if ($name === Item::PROPERTY_MILES && $prop === static::property()) {
             return $object->$name * static::oneMile();
         }
 
-        if ($prop === Unit::PROPERTY_MILES && $name === static::property()) {
+        if ($prop === Item::PROPERTY_MILES && $name === static::property()) {
             $object->$prop = $object->$name / static::oneMile();
         }
 

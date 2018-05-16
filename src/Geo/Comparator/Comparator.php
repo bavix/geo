@@ -19,29 +19,44 @@ class Comparator
         $this->cmp = $cmp;
     }
 
-    public static function equal(): bool
+    /**
+     * @return bool
+     */
+    public function equal(): bool
     {
-        return false;
+        return $this->cmp === 0;
     }
 
-    public static function less(): bool
+    /**
+     * @return bool
+     */
+    public function less(): bool
     {
-        return false;
+        return $this->cmp === -1;
     }
 
-    public static function greater(): bool
+    /**
+     * @return bool
+     */
+    public function greater(): bool
     {
-        return false;
+        return $this->cmp === 1;
     }
 
-    public static function lessThanOrEqual(): bool
+    /**
+     * @return bool
+     */
+    public function lessThanOrEqual(): bool
     {
-        return false;
+        return $this->cmp < 1;
     }
 
-    public static function greaterThanOrEqual(): bool
+    /**
+     * @return bool
+     */
+    public function greaterThanOrEqual(): bool
     {
-        return false;
+        return $this->cmp > -1;
     }
 
 }
