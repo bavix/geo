@@ -30,6 +30,14 @@ class Comparator
     /**
      * @return bool
      */
+    public function notEqual(): bool
+    {
+        return !$this->cmp;
+    }
+
+    /**
+     * @return bool
+     */
     public function less(): bool
     {
         return $this->cmp === -1;

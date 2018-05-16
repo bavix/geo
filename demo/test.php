@@ -6,4 +6,4 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 $coord1 = new \Bavix\Geo\Coordinate(45.012317, 39.053963);
 $coord2 = new \Bavix\Geo\Coordinate(45.021130, 39.020961);
 
-echo $coord1->distanceTo($coord2)->miles;
+echo $coord1->distanceTo($coord2)->kilometers, PHP_EOL;
