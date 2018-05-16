@@ -5,17 +5,22 @@ include_once dirname(__DIR__) . '/vendor/autoload.php';
 //$center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
 $center = new \Bavix\Geo\Coordinate(67.852064, -120.020849);
 
-$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\Mile::class);
-$square = $metrical->squareByHypotenuse($center, new \Bavix\Geo\Units\Mile(100));
+$unit = \Bavix\Geo\Unit\Item::make([
+    \Bavix\Geo\Unit\Item::PROPERTY_MILES => 100
+]);
+
+$metrical   = new \Bavix\Geo\Metrical();
+$quadrangle = $metrical->squareByHypotenuse($center, $unit);
 
 echo \json_encode([
-    'figure' => $square,
-    'c1->c2' => $metrical->distance($center, $square->getLeftUp()),
-    'c1->c3' => $metrical->distance($center, $square->getLeftDown()),
-    'c1->c4' => $metrical->distance($center, $square->getRightUp()),
-    'c1->c5' => $metrical->distance($center, $square->getRightDown()),
+    'figure' => $quadrangle,
 
-    'c2->c5' => $metrical->distance($square->getLeftUp(), $square->getRightDown()),
-    'c3->c5' => $metrical->distance($square->getLeftDown(), $square->getRightDown()),
-    'c4->c5' => $metrical->distance($square->getRightUp(), $square->getRightDown()),
+    'o->a' => $center->distanceTo($quadrangle->at(0))->miles,
+    'o->b' => $center->distanceTo($quadrangle->at(1))->miles,
+    'o->c' => $center->distanceTo($quadrangle->at(2))->miles,
+    'o->d' => $center->distanceTo($quadrangle->at(3))->miles,
+
+    'a->b' => $quadrangle->at(0)->distanceTo($quadrangle->at(1))->miles,
+    'a->c' => $quadrangle->at(0)->distanceTo($quadrangle->at(2))->miles,
+    'a->d' => $quadrangle->at(0)->distanceTo($quadrangle->at(3))->miles,
 ], JSON_PRETTY_PRINT);

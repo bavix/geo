@@ -10,26 +10,6 @@ class Metrical
 {
 
     /**
-     * @param Coordinate $from
-     * @param Coordinate $to
-     *
-     * @return Item
-     *
-     * @see https://en.wikipedia.org/wiki/Great-circle_distance
-     */
-    public function distance(Coordinate $from, Coordinate $to): Item
-    {
-        $theta = $from->longitude->radian - $to->longitude->radian;
-        $partSin = \sin($from->latitude->radian) * \sin($to->latitude->radian);
-        $partCos = \cos($from->latitude->radian) * \cos($to->latitude->radian) * \cos($theta);
-        $dist = \rad2deg(\acos($partSin + $partCos));
-
-        return Item::make([
-            Item::PROPERTY_NAUTICAL_MILES => $dist * 60.
-        ]);
-    }
-
-    /**
      * @param Coordinate $center
      * @param Item       $unit
      *
@@ -96,13 +76,16 @@ class Metrical
         $computed = $line->pop();
         $center = $line->pop();
 
-        $eps = $this->computedEps($unit);
-        $computed = $computed->plus($eps);
         $iterator = 0;
+        $eps = $this->computedEps($unit);
+        $computed = $computed->plus(
+            $eps * $isAxisX,
+            $eps * !$isAxisX
+        );
 
         while ($iterator < 256) {
 
-            $distance = $this->distance($center, $computed);
+            $distance = $center->distanceTo($computed);
             $eps += $this->computedEps($distance);
 
             if ($distance->compareTo($unit)->greaterThanOrEqual()) {
@@ -113,6 +96,7 @@ class Metrical
                 $eps * $isAxisX,
                 $eps * !$isAxisX
             );
+
             $iterator++;
 
         }

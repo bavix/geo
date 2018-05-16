@@ -2,6 +2,7 @@
 
 namespace Bavix\Geo;
 
+use Bavix\Geo\Unit\Item;
 use Bavix\Geo\Value\Axis;
 
 class Coordinate implements \JsonSerializable
@@ -31,6 +32,25 @@ class Coordinate implements \JsonSerializable
         $this->longitude = Axis::make();
         $this->longitude->degrees = $longitude;
         $this->longitude = $this->longitude->proxy();
+    }
+
+    /**
+     * @see https://en.wikipedia.org/wiki/Great-circle_distance
+     *
+     * @param self $object
+     *
+     * @return Item
+     */
+    public function distanceTo(self $object): Item
+    {
+        $theta = $this->longitude->radian - $object->longitude->radian;
+        $partSin = \sin($this->latitude->radian) * \sin($object->latitude->radian);
+        $partCos = \cos($this->latitude->radian) * \cos($object->latitude->radian) * \cos($theta);
+        $dist = \rad2deg(\acos($partSin + $partCos));
+
+        return Item::make([
+            Item::PROPERTY_NAUTICAL_MILES => $dist * 60.
+        ]);
     }
 
     /**
