@@ -2,14 +2,16 @@
 
 include_once \dirname(__DIR__) . '/vendor/autoload.php';
 
-$center = new \Bavix\Geo\Coordinate(67.852064, -120.020849);
+use Bavix\Geo\Metrical;
+use Bavix\Geo\Coordinate;
+use Bavix\Geo\Unit\Distance;
 
-$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\MileUnit::class);
-$square = $metrical->squareByHypotenuse($center, new \Bavix\Geo\Units\MileUnit(100));
+$center = new Coordinate(67.852064, -120.020849);
+$unit = Distance::fromMiles(100);
 
-$polygon = $square->toPolygon();
+$metrical = new Metrical();
+$square = $metrical->squareByHypotenuse($center, $unit);
 
-var_dump($polygon->contains(\Bavix\Geo\Coordinate::make(
-    $square->getLeftUp()->getLatitudeDeg(),
-    $square->getLeftUp()->getLongitudeDeg()
-)));
+$point = $square->at(3);
+
+var_dump($square->contains($point));

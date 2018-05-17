@@ -2,18 +2,21 @@
 
 namespace Bavix\Geo;
 
+use Bavix\Geo\Unit\Distance;
+use Bavix\Geo\Value\Axis;
+
 class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var AxisProperty
+     * @var Axis
      */
-    protected $latitude;
+    public $latitude;
 
     /**
-     * @var AxisProperty
+     * @var Axis
      */
-    protected $longitude;
+    public $longitude;
 
     /**
      * Coordinate constructor.
@@ -22,18 +25,36 @@ class Coordinate implements \JsonSerializable
      */
     public function __construct(float $latitude, float $longitude)
     {
-        $this->latitude = AxisProperty::make();
+        $this->latitude = Axis::make();
         $this->latitude->degrees = $latitude;
+        $this->latitude = $this->latitude->proxy(); // readOnly
 
-        $this->longitude = AxisProperty::make();
+        $this->longitude = Axis::make();
         $this->longitude->degrees = $longitude;
+        $this->longitude = $this->longitude->proxy();
+    }
+
+    /**
+     * @see https://en.wikipedia.org/wiki/Great-circle_distance
+     *
+     * @param self $object
+     *
+     * @return Distance
+     */
+    public function distanceTo(self $object): Distance
+    {
+        $theta = $this->longitude->radian - $object->longitude->radian;
+        $partSin = \sin($this->latitude->radian) * \sin($object->latitude->radian);
+        $partCos = \cos($this->latitude->radian) * \cos($object->latitude->radian) * \cos($theta);
+        $dist = \rad2deg(\acos($partSin + $partCos));
+        return Distance::fromNauticalMiles($dist * 60.);
     }
 
     /**
      * @param float $latitude
      * @param float $longitude
      *
-     * @return Coordinate
+     * @return static
      */
     public static function make(float $latitude, float $longitude): self
     {
@@ -41,13 +62,14 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
-     * @return Coordinate
+     * @param float|Axis $latitude
+     * @param float|Axis $longitude
+     * @return static
      */
-    public function plus(float $latitude, float $longitude = null): self
+    public function plus($latitude, $longitude): self
     {
-        $longitude = $longitude ?: $latitude;
+        $latitude = \is_object($latitude) ? $latitude->degrees : $latitude;
+        $longitude = \is_object($longitude) ? $longitude->degrees : $longitude;
 
         return static::make(
             $this->latitude->degrees + $latitude,
@@ -56,70 +78,16 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
-     * @return Coordinate
+     * @param float|Axis $latitude
+     * @param float|Axis $longitude
+     * @return static
      */
-    public function minus(float $latitude, float $longitude = null): self
+    public function minus($latitude, $longitude): self
     {
-        $longitude = $longitude ?: $latitude;
-
-        return static::make(
-            $this->latitude->degrees - $latitude,
-            $this->longitude->degrees - $longitude
+        return $this->plus(
+            -$latitude,
+            -$longitude
         );
-    }
-
-    /**
-     * @return AxisProperty
-     */
-    public function latitude(): AxisProperty
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * @return AxisProperty
-     */
-    public function longitude(): AxisProperty
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * @return float
-     * @deprecated use latitude
-     */
-    public function getLatitudeDeg(): float
-    {
-        return $this->latitude->degrees;
-    }
-
-    /**
-     * @return float
-     * @deprecated use longitude
-     */
-    public function getLongitudeDeg(): float
-    {
-        return $this->longitude->degrees;
-    }
-
-    /**
-     * @return float
-     * @deprecated use latitude
-     */
-    public function getLatitudeRad(): float
-    {
-        return $this->latitude->radian;
-    }
-
-    /**
-     * @return float
-     * @deprecated use longitude
-     */
-    public function getLongitudeRad(): float
-    {
-        return $this->longitude->radian;
     }
 
     /**

@@ -2,10 +2,18 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$axis = new \Bavix\Geo\AxisProperty();
+use Bavix\Geo\Value\Axis;
 
-$axis->degrees = 100;
+$axis = Axis::fromDegrees(100);
+
 var_dump($axis->radian, $axis->degrees);
 
 $axis->radian = 3;
 var_dump($axis->radian, $axis->degrees);
+
+try {
+    $proxy = $axis->proxy();
+    $proxy->degrees = 99;
+} catch (\Throwable $throwable) {
+    var_dump($throwable->getMessage(), $proxy->degrees);
+}

@@ -2,165 +2,127 @@
 
 namespace Bavix\Geo;
 
-use Bavix\Geo\Figures\RectangleFigure;
-use Bavix\Geo\Units\NauticalMileUnit;
+use Bavix\Geo\Geometry\Line;
+use Bavix\Geo\Geometry\Quadrangle;
+use Bavix\Geo\Unit\Distance;
 
 class Metrical
 {
 
     /**
-     * @var string|Unit
-     */
-    protected $unit;
-
-    /**
-     * Distance constructor.
-     * @param string $unit
-     */
-    public function __construct(string $unit = Units\MileUnit::class)
-    {
-        $this->unit = $unit;
-    }
-
-    /**
-     * @param Coordinate $from
-     * @param Coordinate $to
+     * @param Coordinate $center
+     * @param Distance   $unit
      *
-     * @return Unit
-     *
-     * @see https://en.wikipedia.org/wiki/Great-circle_distance
+     * @return Quadrangle
      */
-    public function distance(Coordinate $from, Coordinate $to): Unit
+    public function squareByHypotenuse(Coordinate $center, Distance $unit): Quadrangle
     {
-        $theta = $from->longitude()->radian - $to->longitude()->radian;
-        $partSin = \sin($from->latitude()->radian) * \sin($to->latitude()->radian);
-        $partCos = \cos($from->latitude()->radian) * \cos($to->latitude()->radian) * \cos($theta);
-        $dist = \rad2deg(\acos($partSin + $partCos));
-        return NauticalMileUnit::make($dist * 60.)
-            ->to($this->unit);
+        $item = clone $unit;
+        $item->miles /= \sqrt(2);
+        return $this->square($center, $item);
     }
 
     /**
      * @param Coordinate $center
-     * @param Unit       $unit
+     * @param Distance   $unit
      *
-     * @return RectangleFigure
+     * @return Quadrangle
      */
-    public function squareByHypotenuse(Coordinate $center, Unit $unit): RectangleFigure
-    {
-        return $this->square(
-            $center,
-            MathUnit::div($unit, \sqrt(2))
-        );
-    }
-
-    /**
-     * @param Coordinate $center
-     * @param Unit $unit
-     * @return RectangleFigure
-     */
-    public function square(Coordinate $center, Unit $unit): RectangleFigure
+    public function square(Coordinate $center, Distance $unit): Quadrangle
     {
         return $this->rectangle($center, $unit, $unit);
     }
 
     /**
      * @param Coordinate $center
-     * @param Unit $unitX
-     * @param Unit $unitY
-     * @return RectangleFigure
+     * @param Distance   $unitX
+     * @param Distance   $unitY
+     *
+     * @return Quadrangle
      */
-    public function rectangle(Coordinate $center, Unit $unitX, Unit $unitY): RectangleFigure
+    public function rectangle(Coordinate $center, Distance $unitX, Distance $unitY): Quadrangle
     {
-        $axisX = Axis::make($unitX);
-        $axisY = Axis::make($unitY, false);
-
-        $vx = $this->speed($axisX->unit(NauticalMileUnit::class));
-        $vy = $this->speed($axisY->unit(NauticalMileUnit::class));
+        $vx = \rad2deg($unitX->nauticalMiles / 60.);
+        $vy = \rad2deg($unitY->nauticalMiles / 60.);
         $dx = \deg2rad(\hypot($vx, $vx) / 2.);
         $dy = \deg2rad(\hypot(0, $vy));
 
-        $computedX = new Coordinate(
-            $center->latitude()->degrees + $dx,
-            $center->longitude()->degrees
-        );
+        $computedX = $center->plus($dx, 0);
+        $computedY = $center->plus(0, $dy);
 
-        $computedY = new Coordinate(
-            $center->latitude()->degrees,
-            $center->longitude()->degrees + $dy
-        );
+        $lineX = new Line();
+        $lineX->push($center);
+        $lineY = clone $lineX;
+        $lineX->push($computedX);
+        $lineY->push($computedY);
 
-        $latitude = $this->axisComputed($center, $computedX, $axisX);
-        $longitude = $this->axisComputed($center, $computedY, $axisY);
+        $latitude = $this->axisComputed($lineX, $unitX);
+        $longitude = $this->axisComputed($lineY, $unitY, false);
 
-        return RectangleFigure::make(
+        return Quadrangle::makeWithXY(
             $center,
-            MathUnit::mul($axisX->unit(), $latitude)->miles(),
-            MathUnit::mul($axisY->unit(), $longitude)->miles()
+            $unitX->miles * $latitude,
+            $unitY->miles * $longitude
         );
     }
 
     /**
-     * @param Coordinate $center
-     * @param Coordinate $computed
-     * @param Axis $axis
+     * @param Line     $line
+     * @param Distance $unit
+     * @param bool     $isAxisX
      *
      * @return float
      */
-    protected function axisComputed(Coordinate $center, Coordinate $computed, Axis $axis): float
+    protected function axisComputed(Line $line, Distance $unit, bool $isAxisX = true): float
     {
-        $eps = $this->computedEps($axis->unit());
-        $computed = $computed->plus($eps);
+        $computed = $line->pop();
+        $center = $line->pop();
+
         $iterator = 0;
+        $eps = $this->computedEps($unit);
+        $computed = $computed->plus(
+            $eps * $isAxisX,
+            $eps * !$isAxisX
+        );
 
         while ($iterator < 256) {
 
-            $distance = $this->distance($center, $computed);
+            $distance = $center->distanceTo($computed);
             $eps += $this->computedEps($distance);
 
-            if (!CompareUnit::less($distance, $axis->unit())) {
+            if ($distance->compareTo($unit)->greaterThanOrEqual()) {
                 break;
             }
 
-            $computed = $computed::make(
-                $computed->latitude()->degrees + $eps * $axis->isAxisX(),
-                $computed->longitude()->degrees + $eps * !$axis->isAxisX()
+            $computed = $computed->plus(
+                $eps * $isAxisX,
+                $eps * !$isAxisX
             );
 
             $iterator++;
 
         }
 
-        if ($axis->isAxisX()) {
-            $result = $center->latitude()->degrees - $computed->latitude()->degrees;
+        if ($isAxisX) {
+            $result = $center->latitude->degrees - $computed->latitude->degrees;
         } else {
-            $result = $center->longitude()->degrees - $computed->longitude()->degrees;
+            $result = $center->longitude->degrees - $computed->longitude->degrees;
         }
 
-        return \abs($result) / $axis->unit()->miles();
+        return \abs($result) / $unit->miles;
     }
 
     /**
-     * @param Unit $axis
+     * @param Distance $axis
      *
      * @return float
      */
-    protected function computedEps(Unit $axis): float
+    protected function computedEps(Distance $axis): float
     {
         return \max(
-            \round($axis->miles(), 5) / 1e5,
+            \round($axis->miles, 5) / 1e5,
             1e-7
         );
-    }
-
-    /**
-     * @param Unit $unit
-     *
-     * @return float
-     */
-    protected function speed(Unit $unit): float
-    {
-        return \rad2deg(NauticalMileUnit::fromMiles($unit)->value() / 60.);
     }
 
 }

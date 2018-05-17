@@ -2,24 +2,33 @@
 
 include_once dirname(__DIR__) . '/vendor/autoload.php';
 
-$center = new \Bavix\Geo\Coordinate(44.764558, 39.881960);
+use Bavix\Geo\Unit\Distance;
+use Bavix\Geo\Coordinate;
+use Bavix\Geo\Metrical;
 
-$metrical = new \Bavix\Geo\Metrical(\Bavix\Geo\Units\MileUnit::class);
-$rectangle = $metrical->rectangle(
+$center = new Coordinate(44.764558, 39.881960);
+
+$unitX = Distance::fromMiles(4);
+$unitY = Distance::fromMiles(3);
+
+$metrical   = new Metrical();
+$quadrangle = $metrical->rectangle(
     $center,
-    new \Bavix\Geo\Units\MileUnit(4),
-    new \Bavix\Geo\Units\MileUnit(3)
+    $unitX,
+    $unitY
 );
 
+echo \json_encode($center->distanceTo($quadrangle->at(0)), JSON_PRETTY_PRINT), PHP_EOL;
+
 echo \json_encode([
-    'figure' => $rectangle,
+    'figure' => $quadrangle,
 
-    'c1->c2' => $metrical->distance($center, $rectangle->getLeftUp()),
-    'c1->c3' => $metrical->distance($center, $rectangle->getLeftDown()),
-    'c1->c4' => $metrical->distance($center, $rectangle->getRightUp()),
-    'c1->c5' => $metrical->distance($center, $rectangle->getRightDown()),
+    'o->a' => $center->distanceTo($quadrangle->at(0))->miles,
+    'o->b' => $center->distanceTo($quadrangle->at(1))->miles,
+    'o->c' => $center->distanceTo($quadrangle->at(2))->miles,
+    'o->d' => $center->distanceTo($quadrangle->at(3))->miles,
 
-    'c2->c5' => $metrical->distance($rectangle->getLeftUp(), $rectangle->getRightDown()),
-    'c3->c5' => $metrical->distance($rectangle->getLeftDown(), $rectangle->getRightDown()),
-    'c4->c5' => $metrical->distance($rectangle->getRightUp(), $rectangle->getRightDown()),
-], JSON_PRETTY_PRINT);
+    'a->b' => $quadrangle->at(0)->distanceTo($quadrangle->at(1))->miles,
+    'a->c' => $quadrangle->at(0)->distanceTo($quadrangle->at(2))->miles,
+    'a->d' => $quadrangle->at(0)->distanceTo($quadrangle->at(3))->miles,
+], JSON_PRETTY_PRINT), PHP_EOL;
