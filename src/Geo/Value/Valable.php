@@ -16,6 +16,11 @@ abstract class Valable implements \JsonSerializable
     /**
      * @var array
      */
+    protected $extends;
+
+    /**
+     * @var array
+     */
     private $data = [];
 
     /**
@@ -25,6 +30,13 @@ abstract class Valable implements \JsonSerializable
      */
     public function __construct(array $data = null)
     {
+        if ($this->extends) {
+            $this->properties = \array_merge_recursive(
+                $this->properties,
+                $this->extends
+            );
+        }
+
         foreach ((array)$data as $key => $value) {
             $this->$key = $value;
         }
