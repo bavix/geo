@@ -4,7 +4,7 @@ namespace Bavix\Geo\Unit;
 
 use Bavix\Geo\Value\Valable;
 
-abstract class Unitable implements UnitInterface
+abstract class Distable implements DistanceInterface
 {
 
     /**

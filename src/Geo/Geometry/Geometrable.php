@@ -4,7 +4,7 @@ namespace Bavix\Geo\Geometry;
 
 use Bavix\Geo\Coordinate;
 
-abstract class Geometrable implements \Countable
+abstract class Geometrable implements \Countable, \JsonSerializable
 {
 
     /**
@@ -151,6 +151,14 @@ abstract class Geometrable implements \Countable
         $self = clone $this;
         $self->points = \array_reverse($this->points);
         return $self;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->points();
     }
 
 }

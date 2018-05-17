@@ -42,8 +42,8 @@ class Metrical
      */
     public function rectangle(Coordinate $center, Distance $unitX, Distance $unitY): Quadrangle
     {
-        $vx = $this->speed($unitX);
-        $vy = $this->speed($unitY);
+        $vx = \rad2deg($unitX->nauticalMiles / 60.);
+        $vy = \rad2deg($unitY->nauticalMiles / 60.);
         $dx = \deg2rad(\hypot($vx, $vx) / 2.);
         $dy = \deg2rad(\hypot(0, $vy));
 
@@ -123,16 +123,6 @@ class Metrical
             \round($axis->miles, 5) / 1e5,
             1e-7
         );
-    }
-
-    /**
-     * @param Distance $unit
-     *
-     * @return float
-     */
-    protected function speed(Distance $unit): float
-    {
-        return \rad2deg($unit->nauticalMiles / 60.);
     }
 
 }

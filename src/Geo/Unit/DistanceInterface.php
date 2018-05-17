@@ -4,7 +4,7 @@ namespace Bavix\Geo\Unit;
 
 use Bavix\Geo\Value\ValueInterface;
 
-interface UnitInterface extends ValueInterface
+interface DistanceInterface extends ValueInterface
 {
     /**
      * @return string

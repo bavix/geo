@@ -3,9 +3,9 @@
 namespace Bavix\Geo\Unit\Provider;
 
 use Bavix\Geo\Unit\Distance;
-use Bavix\Geo\Unit\Unitable;
+use Bavix\Geo\Unit\Distable;
 
-class NauticalMile extends Unitable
+class NauticalMile extends Distable
 {
 
     /**

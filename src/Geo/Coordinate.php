@@ -47,10 +47,7 @@ class Coordinate implements \JsonSerializable
         $partSin = \sin($this->latitude->radian) * \sin($object->latitude->radian);
         $partCos = \cos($this->latitude->radian) * \cos($object->latitude->radian) * \cos($theta);
         $dist = \rad2deg(\acos($partSin + $partCos));
-
-        return Distance::make([
-            Distance::PROPERTY_NAUTICAL_MILES => $dist * 60.
-        ]);
+        return Distance::fromNauticalMiles($dist * 60.);
     }
 
     /**

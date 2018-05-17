@@ -18,6 +18,8 @@ $quadrangle = $metrical->rectangle(
     $unitY
 );
 
+echo \json_encode($center->distanceTo($quadrangle->at(0)), JSON_PRETTY_PRINT), PHP_EOL;
+
 echo \json_encode([
     'figure' => $quadrangle,
 
@@ -29,4 +31,4 @@ echo \json_encode([
     'a->b' => $quadrangle->at(0)->distanceTo($quadrangle->at(1))->miles,
     'a->c' => $quadrangle->at(0)->distanceTo($quadrangle->at(2))->miles,
     'a->d' => $quadrangle->at(0)->distanceTo($quadrangle->at(3))->miles,
-], JSON_PRETTY_PRINT);
+], JSON_PRETTY_PRINT), PHP_EOL;

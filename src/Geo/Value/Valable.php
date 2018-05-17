@@ -2,7 +2,7 @@
 
 namespace Bavix\Geo\Value;
 
-abstract class Valable
+abstract class Valable implements \JsonSerializable
 {
 
     const READ_ONLY = 1;
@@ -183,6 +183,14 @@ abstract class Valable
         return
             \array_key_exists($name, $this->data) ||
             isset($this->properties[$name]);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->data;
     }
 
 }
