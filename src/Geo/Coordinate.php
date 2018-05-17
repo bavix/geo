@@ -62,12 +62,15 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
+     * @param float|Axis $latitude
+     * @param float|Axis $longitude
      * @return static
      */
-    public function plus(float $latitude, float $longitude): self
+    public function plus($latitude, $longitude): self
     {
+        $latitude = \is_object($latitude) ? $latitude->degrees : $latitude;
+        $longitude = \is_object($longitude) ? $longitude->degrees : $longitude;
+
         return static::make(
             $this->latitude->degrees + $latitude,
             $this->longitude->degrees + $longitude
@@ -75,11 +78,11 @@ class Coordinate implements \JsonSerializable
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
+     * @param float|Axis $latitude
+     * @param float|Axis $longitude
      * @return static
      */
-    public function minus(float $latitude, float $longitude): self
+    public function minus($latitude, $longitude): self
     {
         return $this->plus(
             -$latitude,
