@@ -11,6 +11,9 @@ var_dump($axis->radian, $axis->degrees);
 $axis->radian = 3;
 var_dump($axis->radian, $axis->degrees);
 
-$proxy = $axis->proxy();
-//$proxy->degrees = 99;
-var_dump($proxy->degrees);
+try {
+    $proxy = $axis->proxy();
+    $proxy->degrees = 99;
+} catch (\Throwable $throwable) {
+    var_dump($throwable->getMessage(), $proxy->degrees);
+}
