@@ -5,18 +5,34 @@ namespace Bavix\Geo;
 use Bavix\Geo\Unit\Distance;
 use Bavix\Geo\Value\Axis;
 
+/**
+ * Class Coordinate
+ *
+ * @package Bavix\Geo
+ *
+ * @property-read Axis $latitude
+ * @property-read Axis $longitude
+ */
 class Coordinate implements \JsonSerializable
 {
 
     /**
-     * @var Axis
+     * @var array
      */
-    public $latitude;
+    protected $getter = [
+        'latitude' => true,
+        'longitude' => true,
+    ];
 
     /**
      * @var Axis
      */
-    public $longitude;
+    protected $latitude;
+
+    /**
+     * @var Axis
+     */
+    protected $longitude;
 
     /**
      * Coordinate constructor.
@@ -27,11 +43,43 @@ class Coordinate implements \JsonSerializable
     {
         $this->latitude = Axis::make();
         $this->latitude->degrees = $latitude;
-        $this->latitude = $this->latitude->proxy(); // readOnly
-
         $this->longitude = Axis::make();
         $this->longitude->degrees = $longitude;
-        $this->longitude = $this->longitude->proxy();
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Axis
+     */
+    public function __get($name): Axis
+    {
+        if (!isset($this->getter[$name])) {
+            throw new \InvalidArgumentException(__METHOD__);
+        }
+
+        return $this->$name->proxy();
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __set($name, $value)
+    {
+        throw new \InvalidArgumentException(__METHOD__);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function __isset(string $name): bool
+    {
+        return isset($this->getter[$name]);
     }
 
     /**
