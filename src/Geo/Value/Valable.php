@@ -143,6 +143,10 @@ abstract class Valable implements \JsonSerializable
         }
     }
 
+    /**
+     * @param string $prop
+     * @param $mixed
+     */
     protected function dataSet(string $prop, $mixed)
     {
         if ($mixed !== null) {
