@@ -9,6 +9,11 @@ abstract class Valable implements \JsonSerializable
     const WRITE = 2;
 
     /**
+     * @var string
+     */
+    protected $objectId;
+
+    /**
      * @var array
      */
     protected $properties;
@@ -30,6 +35,8 @@ abstract class Valable implements \JsonSerializable
      */
     public function __construct(array $data = null)
     {
+        $this->objectId = \spl_object_id($this);
+
         if ($this->extends) {
             $this->properties = \array_merge_recursive(
                 $this->properties,
@@ -40,6 +47,14 @@ abstract class Valable implements \JsonSerializable
         foreach ((array)$data as $key => $value) {
             $this->$key = $value;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function objectId(): string
+    {
+        return $this->objectId;
     }
 
     /**
@@ -77,13 +92,16 @@ abstract class Valable implements \JsonSerializable
      */
     public function proxy(): self
     {
-        $self = clone $this;
+        static $proxies = [];
 
-        foreach ((array)$this->properties as $key => $value) {
-            $self->properties[$key]['type'] = self::READ_ONLY;
+        if (empty($proxies[$this->objectId()])) {
+            $proxies[$this->objectId()] = $self = clone $this;
+            foreach ((array)$this->properties as $key => $value) {
+                $self->properties[$key]['type'] = self::READ_ONLY;
+            }
         }
 
-        return $self;
+        return $proxies[$this->objectId()];
     }
 
     /**
