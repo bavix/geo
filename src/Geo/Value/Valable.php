@@ -134,7 +134,7 @@ abstract class Valable implements \JsonSerializable
     protected function modify(string $name, array $props)
     {
         foreach ($props as $prop => $callback) {
-            if (class_exists($callback, false)) {
+            if (!function_exists($callback) && class_exists($callback)) {
                 $this->dataSet($prop, $this->classModify($callback, $name, $prop));
                 continue;
             }
