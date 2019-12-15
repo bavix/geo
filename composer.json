@@ -15,7 +15,13 @@
   ],
   "autoload": {
     "psr-4": {
-      "Bavix\\": "src/"
+      "Bavix\\Geo\\": "src/"
     }
+  },
+  "require": {
+    "php": "^7.0",
+    "ext-json": "*",
+    "symfony/polyfill-php72": "^1.13",
+    "symfony/polyfill-php71": "^1.13"
   }
 }

@@ -16,7 +16,7 @@ geo - library for working with maps.
 * **Vendor**: bavix
 * **Package**: geo
 * **Version**: [![Latest Stable Version](https://poser.pugx.org/bavix/geo/v/stable)](https://packagist.org/packages/bavix/geo)
-* **PHP Version**: 7.1+ 
+* **PHP Version**: 7.0+ 
 * **[Composer](https://getcomposer.org/):** `composer require bavix/geo`
 
 ---

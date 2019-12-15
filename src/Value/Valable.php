@@ -169,7 +169,7 @@ abstract class Valable implements \JsonSerializable
             throw new \InvalidArgumentException('Interface ' . ValueInterface::class . ' not found');
         }
 
-        return $object->modify($this, $name, $prop);
+        return $object::modify($this, $name, $prop);
     }
 
     /**
