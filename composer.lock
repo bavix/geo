@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "symfony/polyfill-php71",
-            "version": "v1.14.0",
+            "version": "v1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php71.git",
-                "reference": "9a181bae42e5f15f7ba17ab213854b15188f5a5a"
+                "reference": "2f78c740b0635f068c4de30538ba5fec8f9f6b4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php71/zipball/9a181bae42e5f15f7ba17ab213854b15188f5a5a",
-                "reference": "9a181bae42e5f15f7ba17ab213854b15188f5a5a",
+                "url": "https://api.github.com/repos/symfony/polyfill-php71/zipball/2f78c740b0635f068c4de30538ba5fec8f9f6b4f",
+                "reference": "2f78c740b0635f068c4de30538ba5fec8f9f6b4f",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14-dev"
+                    "dev-master": "1.15-dev"
                 }
             },
             "autoload": {
@@ -59,7 +59,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-01-13T11:15:53+00:00"
+            "time": "2020-02-27T09:26:54+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
