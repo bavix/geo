@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "symfony/polyfill-php71",
-            "version": "v1.17.0",
+            "version": "v1.17.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php71.git",
-                "reference": "df32fb6a422464fdb4bf5554a723e896dd0a0a4a"
+                "reference": "68e2c7aa8058496511d867e43a82d6348686ad87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php71/zipball/df32fb6a422464fdb4bf5554a723e896dd0a0a4a",
-                "reference": "df32fb6a422464fdb4bf5554a723e896dd0a0a4a",
+                "url": "https://api.github.com/repos/symfony/polyfill-php71/zipball/68e2c7aa8058496511d867e43a82d6348686ad87",
+                "reference": "68e2c7aa8058496511d867e43a82d6348686ad87",
                 "shasum": ""
             },
             "require": {
@@ -27,6 +27,10 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.17-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
                 }
             },
             "autoload": {
@@ -59,7 +63,21 @@
                 "portable",
                 "shim"
             ],
-            "time": "2020-05-12T16:47:27+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-06T08:46:27+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -114,6 +132,20 @@
                 "portable",
                 "shim"
             ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-05-12T16:47:27+00:00"
         }
     ],
@@ -127,5 +159,6 @@
         "php": "^7.0",
         "ext-json": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
